@@ -19,6 +19,11 @@ public class Karte {
      */
     public List<Karte> kartendeck;
 
+    /**
+     * Konstruktor der Klasse Karte.
+     * @param wert Wert der Karte
+     * @param farbe Farbe der Karte
+     */
     public Karte(String wert, String farbe) {
         this.wert = wert;
         this.farbe = farbe;

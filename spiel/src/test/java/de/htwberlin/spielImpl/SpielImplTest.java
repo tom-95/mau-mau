@@ -23,6 +23,7 @@ public class SpielImplTest {
     private Spiel spiel;
     private SpielService spielService;
     private KartenService kartenService;
+    private SpielerService spielerService;
 
     @Before
     public void setUp() {
@@ -30,27 +31,22 @@ public class SpielImplTest {
         this.spiel = new Spiel();
         this.spielService = new SpielImpl();
         this.kartenService = new KartenImpl();
+        this.spielerService = new SpielerImpl();
     }
 
     @Test
     public void testSpielStarten() {
-        List<Karte> deck = kartenService.deckErzeugen();
-        List<Spieler> spieler = new ArrayList<>();
-
-        spieler.add(new Spieler("spieler1"));
-        spieler.add(new Spieler("spieler2"));
-
-        Assert.assertNotNull(spielService.spielStarten(deck, spieler));
+        Assert.assertNotNull(spielService.spielStarten(kartenService, spielerService));
     }
 
     @Test
     public void testKartenGeben() {
-        List<Karte> deck = kartenService.deckErzeugen();
         List<Spieler> spieler = new ArrayList<>();
 
         spieler.add(new Spieler("spieler1"));
         spieler.add(new Spieler("spieler2"));
-        spielService.spielStarten(deck, spieler);
+        spiel.setSpieler(spieler);
+        spielService.kartenGeben(spiel);
 
         Assert.assertEquals(7, spiel.getSpieler().get(0).getHand().size());
         Assert.assertEquals(7, spiel.getSpieler().get(1).getHand().size());

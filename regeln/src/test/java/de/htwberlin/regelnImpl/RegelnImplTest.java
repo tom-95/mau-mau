@@ -49,7 +49,7 @@ public class RegelnImplTest {
         List<Karte> ablagestapel = new ArrayList<>();
         ablagestapel.add(new Karte("zehn", "herz"));
         Karte karte = new Karte("zehn", "schaufel");
-        Assert.assertTrue(regeln.checkCard(ablagestapel, karte));
+        Assert.assertTrue(regeln.checkCard(spiel, karte));
     }
 
     @Test

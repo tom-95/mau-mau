@@ -8,7 +8,8 @@ import java.util.List;
 
 public class RegelnImpl implements RegelnService {
 
-    public boolean checkCard(List<Karte> ablagestapel, Karte karte) {
+    public boolean checkCard(Spiel spiel, Karte karte) {
+
         return true;
     }
 

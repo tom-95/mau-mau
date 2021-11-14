@@ -20,12 +20,15 @@ public class Spieler {
     /**
      * Beinhaltet alle Karten welche sich in der Hand des Spielers befinden.
      */
+    private List<Karte> hand = new ArrayList<Karte>();
 
+    /**
+     * Konstruktor der Klasse Spieler.
+     * @param name Name des Spielers
+     */
     public Spieler(String name) {
         this.name = name;
     }
-
-    private List<Karte> hand = new ArrayList<Karte>();
 
     public String getName() {
         return name;
