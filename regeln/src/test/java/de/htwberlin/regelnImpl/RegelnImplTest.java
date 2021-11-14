@@ -63,7 +63,7 @@ public class RegelnImplTest {
         spiel.setSpieler(spieler);
         spiel.setAmZug(spieler.get(0));
 
-        spielerService.karteLegen(karte, spieler.get(0), spiel);
+        spielerService.karteLegen(karte, spieler.get(0), spiel, regeln);
         Spieler aktuellerSpieler = spiel.getAmZug();
         Assert.assertEquals(spieler.get(2), aktuellerSpieler);
     }
@@ -79,7 +79,7 @@ public class RegelnImplTest {
         spiel.setSpieler(spieler);
         spiel.setAmZug(spieler.get(0));
 
-        spielerService.karteLegen(karte, spiel.getSpieler().get(0), spiel);
+        spielerService.karteLegen(karte, spiel.getSpieler().get(0), spiel, regeln);
 
         Assert.assertEquals(2, spiel.getSpieler().get(1).getHand().size());
     }
@@ -95,7 +95,7 @@ public class RegelnImplTest {
         spiel.setSpieler(spieler);
         spiel.setAmZug(spieler.get(0));
 
-        spielerService.karteLegen(karte, spiel.getSpieler().get(0), spiel);
+        spielerService.karteLegen(karte, spiel.getSpieler().get(0), spiel, regeln);
 
         Assert.assertNotNull(spiel.getWunschfarbe());
     }

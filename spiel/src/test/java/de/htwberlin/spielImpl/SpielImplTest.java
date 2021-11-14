@@ -11,6 +11,7 @@ import de.htwberlin.spielerService.SpielerService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,21 +23,30 @@ public class SpielImplTest {
     private Karte karte;
     private Spiel spiel;
     private SpielService spielService;
-    private KartenService kartenService;
-    private SpielerService spielerService;
+    private KartenService kartenMock;
+    private SpielerService spielerMock;
 
     @Before
     public void setUp() {
-//      this.spielMock = Mockito.mock(Spiel.class);
+        this.spielerMock = Mockito.mock(SpielerService.class);
+        this.kartenMock = Mockito.mock(KartenService.class);
         this.spiel = new Spiel();
         this.spielService = new SpielImpl();
-        this.kartenService = new KartenImpl();
-        this.spielerService = new SpielerImpl();
     }
 
     @Test
     public void testSpielStarten() {
-        Assert.assertNotNull(spielService.spielStarten(kartenService, spielerService));
+        Spieler spieler1 = new Spieler("Spieler1");
+        Spieler spieler2 = new Spieler("Spieler2");
+        List<Spieler> spieler = new ArrayList<>();
+        spieler.add(spieler1);
+        spieler.add(spieler2);
+        List<Karte> karten = new ArrayList<>();
+
+        Mockito.when(spielerMock.spielerErzeugen(2)).thenReturn(spieler);
+        Mockito.when(kartenMock.deckErzeugen()).thenReturn(karten);
+
+        Assert.assertNotNull(spielService.spielStarten(kartenMock, spielerMock));
     }
 
     @Test

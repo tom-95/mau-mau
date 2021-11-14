@@ -3,6 +3,8 @@ package de.htwberlin.spielerImpl;
 import de.htwberlin.kartenImpl.KartenImpl;
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.kartenService.KartenService;
+import de.htwberlin.regelnImpl.RegelnImpl;
+import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.spielImpl.SpielImpl;
 import de.htwberlin.spielService.Spiel;
 import de.htwberlin.spielService.SpielService;
@@ -11,6 +13,7 @@ import de.htwberlin.spielerService.SpielerService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +27,15 @@ public class SpielerImplTest {
     private SpielService spielService;
     private SpielerService spielerService;
     private KartenService kartenService;
+    private RegelnService regelnServiceMock;
 
     @Before
     public void setUp() {
-//      this.spielMock = Mockito.mock(Spiel.class);
         this.spiel = new Spiel();
         this.spielService = new SpielImpl();
         this.kartenService = new KartenImpl();
         this.spielerService = new SpielerImpl();
+        this.regelnServiceMock = Mockito.mock(RegelnService.class);
     }
 
     @Test
@@ -47,7 +51,9 @@ public class SpielerImplTest {
         spiel.setSpieler(spieler);
         spiel.getSpieler().get(0).setHand(hand);
 
-        spielerService.karteLegen(spiel.getSpieler().get(0).getHand().get(1), spiel.getSpieler().get(0), spiel);
+        Mockito.when(regelnServiceMock.checkCard(spiel, new Karte("Zehn", "Schaufel"))).thenReturn(true);
+
+        spielerService.karteLegen(spiel.getSpieler().get(0).getHand().get(1), spiel.getSpieler().get(0), spiel, regelnServiceMock);
 
         Assert.assertEquals(1, spiel.getSpieler().get(0).getHand().size());
         Assert.assertEquals(1, spiel.getAblagestapel().size());

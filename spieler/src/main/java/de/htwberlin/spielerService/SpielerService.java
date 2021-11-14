@@ -1,6 +1,7 @@
 package de.htwberlin.spielerService;
 
 import de.htwberlin.kartenService.Karte;
+import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.spielService.Spiel;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface SpielerService {
      * @param spieler - Der Spieler der mau sagt.
      * @param spiel - Das aktuelle Spiel.
      */
-    public void karteLegen(Karte karte, Spieler spieler, Spiel spiel);
+    public void karteLegen(Karte karte, Spieler spieler, Spiel spiel, RegelnService regelnService);
 
     /**
      * Der Spieler sagt "Mau" und kündigt so das Spielen seiner letzten Karte an.
