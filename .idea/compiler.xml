@@ -6,11 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-      </profile>
-      <profile name="Disabled">
-        <module name="karten" />
         <module name="spiel" />
         <module name="spieler" />
+        <module name="karten" />
         <module name="regeln" />
       </profile>
     </annotationProcessing>
