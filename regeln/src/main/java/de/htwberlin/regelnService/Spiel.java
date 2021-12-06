@@ -1,4 +1,4 @@
-package de.htwberlin.spielService;
+package de.htwberlin.regelnService;
 
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.spielerService.Spieler;

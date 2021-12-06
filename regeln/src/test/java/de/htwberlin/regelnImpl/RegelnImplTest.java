@@ -4,9 +4,7 @@ import de.htwberlin.kartenImpl.KartenImpl;
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.kartenService.KartenService;
 import de.htwberlin.regelnService.RegelnService;
-import de.htwberlin.spielImpl.SpielImpl;
-import de.htwberlin.spielService.Spiel;
-import de.htwberlin.spielService.SpielService;
+import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielerImpl.SpielerImpl;
 import de.htwberlin.spielerService.Spieler;
 import de.htwberlin.spielerService.SpielerService;
@@ -48,6 +46,7 @@ public class RegelnImplTest {
     public void testCheckCard() {
         List<Karte> ablagestapel = new ArrayList<>();
         ablagestapel.add(new Karte("zehn", "herz"));
+        spiel.setAblagestapel(ablagestapel);
         Karte karte = new Karte("zehn", "schaufel");
         Assert.assertTrue(regeln.checkCard(spiel, karte));
     }
@@ -63,8 +62,9 @@ public class RegelnImplTest {
         spiel.setSpieler(spieler);
         spiel.setAmZug(spieler.get(0));
 
-        spielerService.karteLegen(karte, spieler.get(0), spiel, regeln);
+        regeln.handleAss(spiel);
         Spieler aktuellerSpieler = spiel.getAmZug();
+
         Assert.assertEquals(spieler.get(2), aktuellerSpieler);
     }
 
@@ -79,7 +79,7 @@ public class RegelnImplTest {
         spiel.setSpieler(spieler);
         spiel.setAmZug(spieler.get(0));
 
-        spielerService.karteLegen(karte, spiel.getSpieler().get(0), spiel, regeln);
+        regeln.handleSieben(spiel);
 
         Assert.assertEquals(2, spiel.getSpieler().get(1).getHand().size());
     }
@@ -95,7 +95,7 @@ public class RegelnImplTest {
         spiel.setSpieler(spieler);
         spiel.setAmZug(spieler.get(0));
 
-        spielerService.karteLegen(karte, spiel.getSpieler().get(0), spiel, regeln);
+        regeln.handleBube(spiel);
 
         Assert.assertNotNull(spiel.getWunschfarbe());
     }

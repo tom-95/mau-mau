@@ -2,10 +2,6 @@ package de.htwberlin.kartenImpl;
 
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.kartenService.KartenService;
-import de.htwberlin.spielService.Spiel;
-import de.htwberlin.spielerImpl.SpielerImpl;
-import de.htwberlin.spielerService.Spieler;
-import de.htwberlin.spielerService.SpielerService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,8 +12,6 @@ import java.util.List;
 public class KartenImplTest {
 
     private KartenService service;
-    private Spieler spieler;
-    private Spiel spiel;
 
     @Before
     public void setUp() {
@@ -39,15 +33,4 @@ public class KartenImplTest {
         Assert.assertNotEquals(kartenDeck, kartenDeckCopy);
     }
 
-    @Test
-    public void testZiehen() {
-        spieler = new Spieler("testSpieler");
-        spiel = new Spiel();
-        List<Karte> hand = spieler.getHand();
-        Integer size = hand.size();
-        service.ziehen(spieler, spiel);
-        List<Karte> handAfter = spieler.getHand();
-        Integer sizeAfter = handAfter.size();
-        Assert.assertNotEquals(size, sizeAfter);
-    }
 }

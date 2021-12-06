@@ -1,7 +1,6 @@
 package de.htwberlin.regelnService;
 
 import de.htwberlin.kartenService.Karte;
-import de.htwberlin.spielService.Spiel;
 
 import java.util.List;
 

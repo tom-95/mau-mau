@@ -2,9 +2,7 @@ package de.htwberlin.regelnImpl;
 
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.regelnService.RegelnService;
-import de.htwberlin.spielService.Spiel;
-
-import java.util.List;
+import de.htwberlin.regelnService.Spiel;
 
 public class RegelnImpl implements RegelnService {
 
