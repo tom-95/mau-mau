@@ -9,6 +9,7 @@
         <module name="spiel" />
         <module name="spieler" />
         <module name="karten" />
+        <module name="gui" />
         <module name="regeln" />
       </profile>
     </annotationProcessing>
