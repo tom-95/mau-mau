@@ -2,9 +2,9 @@ package de.htwberlin;
 
 import javax.swing.*;
 
-public class App extends JFrame {
+public class Gui extends JFrame {
 
-    App() {
+    Gui() {
 
         setSize(1200, 800);
         setResizable(false);
@@ -21,7 +21,7 @@ public class App extends JFrame {
 
     public static void main(String[] args) {
 
-        JFrame app = new App();
+        JFrame app = new Gui();
         app.setVisible(true);
 
     }
