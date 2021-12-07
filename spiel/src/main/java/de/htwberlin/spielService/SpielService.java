@@ -25,21 +25,19 @@ public interface SpielService {
     /**
      * Zieht eine Karte aus dem Kartendeck und fügt sie der Hand hinzu.
      *
-     * @param spieler - Spieler welche die Karte zieht.
      * @param spiel - Das aktuelle Spiel.
      *
      * @return Neue Karte aus dem Kartendeck, welche der Hand hinzugefügt wird.
      */
-    public Karte ziehen(Spieler spieler, Spiel spiel);
+    public Karte ziehen(Spiel spiel);
 
     /**
      * Sofern erlaubt, legt die Methode die vom Spieler gewünschte Karte auf den Ablagestapel und entfernt sie aus der Hand.
      *
      * @param karte - Die vom Spieler gewünschte Karte zur Ablage.
-     * @param spieler - Der Spieler der mau sagt.
      * @param spiel - Das aktuelle Spiel.
      */
-    public void karteLegen(Karte karte, Spieler spieler, Spiel spiel);
+    public void karteLegen(Karte karte, Spiel spiel);
 
     /**
      * Der Spieler sagt "Mau" und kündigt so das Spielen seiner letzten Karte an.

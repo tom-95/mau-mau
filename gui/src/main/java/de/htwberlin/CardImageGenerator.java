@@ -1,5 +1,7 @@
 package de.htwberlin;
 
+import de.htwberlin.kartenService.Karte;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -41,17 +43,34 @@ public class CardImageGenerator {
             entry(List.of("Karo","Bube"), List.of(240,265,60,89)),
             entry(List.of("Herz","Bube"), List.of(300,265,60,89)),
             entry(List.of("Pik","Bube"), List.of(360,265,60,89)),
-            entry(List.of("Kreuz","Bube"), List.of(420,265,60,89)),
-            entry(List.of("?","?"), List.of(0,355,60,89))
+            entry(List.of("Kreuz","Bube"), List.of(420,265,60,89))
     );
 
-    public BufferedImage generateImage(String farbe, String wert) {
+    public static BufferedImage generateImage(Karte karte) {
+
+        String farbe = karte.getFarbe();
+        String wert = karte.getWert();
 
         List<Integer> coordinates = cards.get(List.of(farbe, wert));
         BufferedImage image = null;
 
         try {
             image = ImageIO.read(new File("gui/src/main/resources/deck.jpg")).getSubimage(coordinates.get(0), coordinates.get(1), coordinates.get(2), coordinates.get(3));
+        }
+        catch(Exception e) {
+
+        }
+
+        return image;
+    }
+
+
+    public static BufferedImage generateBack() {
+
+        BufferedImage image = null;
+
+        try {
+            image = ImageIO.read(new File("gui/src/main/resources/deck.jpg")).getSubimage(0,355,60,89);
         }
         catch(Exception e) {
 

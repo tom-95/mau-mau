@@ -71,7 +71,8 @@ public class SpielImplTest {
         spiel = new Spiel();
         List<Karte> hand = spieler.getHand();
         Integer size = hand.size();
-        spielService.ziehen(spieler, spiel);
+        spiel.setSpieler(List.of(spieler));
+        spielService.ziehen(spiel);
         List<Karte> handAfter = spieler.getHand();
         Integer sizeAfter = handAfter.size();
         Assert.assertNotEquals(size, sizeAfter);
@@ -94,7 +95,7 @@ public class SpielImplTest {
 
         spielService.setRegelnService(regelnServiceMock);
 
-        spielService.karteLegen(spiel.getSpieler().get(0).getHand().get(1), spiel.getSpieler().get(0), spiel);
+        spielService.karteLegen(spiel.getSpieler().get(0).getHand().get(1), spiel);
 
         Assert.assertEquals(1, spiel.getSpieler().get(0).getHand().size());
         Assert.assertEquals(1, spiel.getAblagestapel().size());

@@ -24,12 +24,12 @@ public class SpielImpl implements SpielService {
     }
 
     @Override
-    public Karte ziehen(Spieler spieler, Spiel spiel) {
+    public Karte ziehen(Spiel spiel) {
         return null;
     }
 
     @Override
-    public void karteLegen(Karte karte, Spieler spieler, Spiel spiel) {
+    public void karteLegen(Karte karte, Spiel spiel) {
 
     }
 
