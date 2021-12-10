@@ -5,26 +5,21 @@ import java.util.List;
 public class Karte {
 
     /**
-     * Speichert den Wert der Karte.
-     */
-    private String wert;
-
-    /**
      * Speichert die Farbe der Karte.
      */
     private String farbe;
 
     /**
-     * Beinhaltet alle noch nicht gezogenen oder ausgeteilten Karten.
+     * Speichert den Wert der Karte.
      */
-    public List<Karte> kartendeck;
+    private String wert;
 
     /**
      * Konstruktor der Klasse Karte.
      * @param wert Wert der Karte
      * @param farbe Farbe der Karte
      */
-    public Karte(String wert, String farbe) {
+    public Karte(String farbe, String wert) {
         this.wert = wert;
         this.farbe = farbe;
     }
@@ -45,11 +40,4 @@ public class Karte {
         this.farbe = farbe;
     }
 
-    public List<Karte> getKartendeck() {
-        return kartendeck;
-    }
-
-    public void setKartendeck(List<Karte> kartendeck) {
-        this.kartendeck = kartendeck;
-    }
 }

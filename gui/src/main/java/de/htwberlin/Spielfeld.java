@@ -58,13 +58,13 @@ public class Spielfeld extends JPanel {
 
     }
 
-    public void farbeWaehlen() {
+    public String farbeWaehlen() {
 
         String[] options = {"Pik", "Karo", "Herz", "Kreuz"};
 
         int x = JOptionPane.showOptionDialog(null, "Welche Farbe waehlst du?", "Farbe waehlen", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-        spiel.setWunschfarbe(options[x]);
+        return options[x];
 
     }
 

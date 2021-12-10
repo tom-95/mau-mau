@@ -26,10 +26,8 @@ public interface SpielService {
      * Zieht eine Karte aus dem Kartendeck und fügt sie der Hand hinzu.
      *
      * @param spiel - Das aktuelle Spiel.
-     *
-     * @return Neue Karte aus dem Kartendeck, welche der Hand hinzugefügt wird.
      */
-    public Karte ziehen(Spiel spiel);
+    public void ziehen(Spiel spiel);
 
     /**
      * Sofern erlaubt, legt die Methode die vom Spieler gewünschte Karte auf den Ablagestapel und entfernt sie aus der Hand.
@@ -45,7 +43,7 @@ public interface SpielService {
      * @param spieler - Der Spieler der mau sagt.
      * @param spiel - Das aktuelle Spiel.
      */
-    public void mauSagen(Spieler spieler, Spiel spiel);
+    public void mauSagen(Spiel spiel);
 
     public void setKartenService(KartenService kartenService);
 

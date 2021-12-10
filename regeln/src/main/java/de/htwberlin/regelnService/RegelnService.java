@@ -2,8 +2,6 @@ package de.htwberlin.regelnService;
 
 import de.htwberlin.kartenService.Karte;
 
-import java.util.List;
-
 public interface RegelnService {
 
     /**
@@ -35,5 +33,5 @@ public interface RegelnService {
      *
      * @param spiel- Das aktuelle Spiel.
      */
-    public void handleBube(Spiel spiel);
+    //public void handleBube(Spiel spiel);
 }

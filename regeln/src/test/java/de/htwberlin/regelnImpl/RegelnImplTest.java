@@ -60,43 +60,33 @@ public class RegelnImplTest {
         spieler.add(new Spieler("spieler2"));
         spieler.add(new Spieler("spieler3"));
         spiel.setSpieler(spieler);
-        spiel.setAmZug(spieler.get(0));
 
         regeln.handleAss(spiel);
-        Spieler aktuellerSpieler = spiel.getAmZug();
+        int aktuellerSpieler = spiel.getAmZug();
 
-        Assert.assertEquals(spieler.get(2), aktuellerSpieler);
+        Assert.assertEquals(spieler.get(2), spieler.get(aktuellerSpieler));
     }
 
     @Test
     public void testHandleSieben() {
 
-        List<Spieler> spieler = new ArrayList<>();
-        karte = new Karte("7", "Herz");
-
-        spieler.add(new Spieler("spieler1"));
-        spieler.add(new Spieler("spieler2"));
-        spiel.setSpieler(spieler);
-        spiel.setAmZug(spieler.get(0));
-
         regeln.handleSieben(spiel);
 
-        Assert.assertEquals(2, spiel.getSpieler().get(1).getHand().size());
+        Assert.assertEquals(2, spiel.getZiehZaehler());
     }
 
-    @Test
-    public void testHandleBube() {
-
-        List<Spieler> spieler = new ArrayList<>();
-        karte = new Karte("Bube", "Herz");
-
-        spieler.add(new Spieler("spieler1"));
-        spieler.add(new Spieler("spieler2"));
-        spiel.setSpieler(spieler);
-        spiel.setAmZug(spieler.get(0));
-
-        regeln.handleBube(spiel);
-
-        Assert.assertNotNull(spiel.getWunschfarbe());
-    }
+//    @Test
+//    public void testHandleBube() {
+//
+//        List<Spieler> spieler = new ArrayList<>();
+//        karte = new Karte("Bube", "Herz");
+//
+//        spieler.add(new Spieler("spieler1"));
+//        spieler.add(new Spieler("spieler2"));
+//        spiel.setSpieler(spieler);
+//
+//        regeln.handleBube(spiel);
+//
+//        Assert.assertNotNull(spiel.getWunschfarbe());
+//    }
 }

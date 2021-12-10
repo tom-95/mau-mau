@@ -2,6 +2,7 @@ package de.htwberlin.spielImpl;
 
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.kartenService.KartenService;
+import de.htwberlin.regelnImpl.RegelnImpl;
 import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
@@ -10,11 +11,18 @@ import de.htwberlin.spielerService.SpielerService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.when;
+
+@RunWith(MockitoJUnitRunner.class)
 public class SpielImplTest {
 
     private Karte karte;
@@ -23,7 +31,9 @@ public class SpielImplTest {
     private SpielService spielService;
     private KartenService kartenMock;
     private SpielerService spielerMock;
-    private RegelnService regelnServiceMock;
+    @InjectMocks
+    private RegelnService regelnServiceMock = new RegelnImpl();
+
 
     @Before
     public void setUp() {
@@ -31,7 +41,7 @@ public class SpielImplTest {
         this.kartenMock = Mockito.mock(KartenService.class);
         this.spiel = new Spiel();
         this.spielService = new SpielImpl();
-        this.regelnServiceMock = Mockito.mock(RegelnService.class);
+        //this.regelnServiceMock = Mockito.mock(RegelnService.class);
     }
 
     @Test
@@ -43,8 +53,8 @@ public class SpielImplTest {
         spieler.add(spieler2);
         List<Karte> karten = new ArrayList<>();
 
-        Mockito.when(spielerMock.spielerErzeugen(2)).thenReturn(spieler);
-        Mockito.when(kartenMock.deckErzeugen()).thenReturn(karten);
+        when(spielerMock.spielerErzeugen(2)).thenReturn(spieler);
+        when(kartenMock.deckErzeugen()).thenReturn(karten);
 
         spielService.setSpielerService(spielerMock);
         spielService.setKartenService(kartenMock);
@@ -91,7 +101,11 @@ public class SpielImplTest {
         spiel.setSpieler(spieler);
         spiel.getSpieler().get(0).setHand(hand);
 
-        Mockito.when(regelnServiceMock.checkCard(spiel, new Karte("Zehn", "Schaufel"))).thenReturn(true);
+        List<Karte> ablagestapel = new ArrayList<>();
+        ablagestapel.add(new Karte("Zehn", "Herz"));
+        spiel.setAblagestapel(ablagestapel);
+
+        when(regelnServiceMock.checkCard(spiel, new Karte("Zehn", "Schaufel"))).thenReturn(true);
 
         spielService.setRegelnService(regelnServiceMock);
 
@@ -107,8 +121,9 @@ public class SpielImplTest {
         List<Spieler> spieler = new ArrayList<>();
         spieler.add(new Spieler("spieler1"));
         spieler.add(new Spieler("spieler2"));
+        spiel.setSpieler(spieler);
 
-        spielService.mauSagen(spieler.get(0), spiel);
+        spielService.mauSagen(spiel);
 
         Assert.assertTrue(spieler.get(0).isMauGesagt());
     }

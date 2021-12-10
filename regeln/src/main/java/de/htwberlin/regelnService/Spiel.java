@@ -14,29 +14,29 @@ public class Spiel {
     public List<Spieler> spieler;
 
     /**
+     * Beinhaltet alle noch nicht gezogenen oder ausgeteilten Karten.
+     */
+    public List<Karte> kartendeck;
+
+    /**
      * Beinhaltet alle Karten welche von den Spielern abelegt wurden.
      */
     private List<Karte> ablagestapel = new ArrayList<>();
 
     /**
-     * Zeigt die Richtung des Spielverlaufs (im Uhrzeigersinn (true) oder gegen den Uhrzeigersinn (false)).
+     * Speichert den Index des Spielers, der am Zug ist.
      */
-    public boolean richtungUhrzeiger;
-
-    /**
-     * Speichert den Spieler, der am Zug ist.
-     */
-    private Spieler amZug;
+    private int amZug = 0;
 
     /**
      * Zählt die Anzahl Karten welche vom nächsten Spieler gezogen werden müssen.
      */
-    private int ziehZaehler;
+    private int ziehZaehler = 0;
 
     /**
      * Speichert die gewünschte Farbe welche vom nächsten Spieler gelegt werden muss.
      */
-    private String wunschfarbe;
+    private String wunschfarbe = null;
 
 
     public List<Spieler> getSpieler() {
@@ -55,19 +55,11 @@ public class Spiel {
         this.ablagestapel = ablagestapel;
     }
 
-    public boolean isRichtungUhrzeiger() {
-        return richtungUhrzeiger;
-    }
-
-    public void setRichtungUhrzeiger(boolean richtungUhrzeiger) {
-        this.richtungUhrzeiger = richtungUhrzeiger;
-    }
-
-    public Spieler getAmZug() {
+    public int getAmZug() {
         return amZug;
     }
 
-    public void setAmZug(Spieler amZug) {
+    public void setAmZug(int amZug) {
         this.amZug = amZug;
     }
 
@@ -86,4 +78,8 @@ public class Spiel {
     public void setWunschfarbe(String wunschfarbe) {
         this.wunschfarbe = wunschfarbe;
     }
+
+    public List<Karte> getKartendeck() { return kartendeck; }
+
+    public void setKartendeck(List<Karte> kartendeck) { this.kartendeck = kartendeck; }
 }
