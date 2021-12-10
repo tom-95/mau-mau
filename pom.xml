@@ -15,6 +15,7 @@
         <module>spieler</module>
         <module>regeln</module>
         <module>gui</module>
+        <module>konfiguration</module>
     </modules>
 
     <properties>

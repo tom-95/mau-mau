@@ -11,6 +11,7 @@
         <module name="karten" />
         <module name="gui" />
         <module name="regeln" />
+        <module name="konfiguration" />
       </profile>
     </annotationProcessing>
   </component>
