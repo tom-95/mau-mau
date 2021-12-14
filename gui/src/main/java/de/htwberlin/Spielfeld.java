@@ -50,11 +50,17 @@ public class Spielfeld extends JPanel {
 
         setVisible(true);
 
+        spielStarten();
+
     }
 
-    public void kartenanzahlGegnerAendern(int anzahl) {
+    public void spielStarten() {
 
-        opponent.setText("Dein Gegner hat " + anzahl + " Karten");
+        Integer[] options = {2};
+
+        int x = JOptionPane.showOptionDialog(null, "Wie viele Spieler seid ihr?", "Anzahl Spieler", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+        spielService.spielStarten(x);
 
     }
 

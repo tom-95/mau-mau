@@ -17,14 +17,15 @@ public class SpielImpl implements SpielService {
     private SpielerService spielerService;
     private RegelnService regelnService;
 
-    public Spiel spielStarten() {
+    public Spiel spielStarten(int anzahlSpieler) {
 
         Spiel spiel = new Spiel();
 
-        List<Spieler> spieler = spielerService.spielerErzeugen(2);
+        List<Spieler> spieler = spielerService.spielerErzeugen(anzahlSpieler);
 
         spiel.setSpieler(spieler);
         spiel.setKartendeck(kartenService.deckErzeugen());
+        kartenGeben(spiel);
 
         return spiel;
 
@@ -111,6 +112,6 @@ public class SpielImpl implements SpielService {
 
     @Override
     public void setRegelnService(RegelnService regelnService) {
-
+        this.regelnService = regelnService;
     }
 }

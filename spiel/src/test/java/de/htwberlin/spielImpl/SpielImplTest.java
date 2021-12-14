@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -28,19 +29,20 @@ public class SpielImplTest {
     private Karte karte;
     private Spiel spiel;
     private Spieler spieler;
-    private SpielService spielService;
+    @InjectMocks
+    private SpielService spielService = new SpielImpl();
     private KartenService kartenMock;
     private SpielerService spielerMock;
-    @InjectMocks
-    private RegelnService regelnServiceMock = new RegelnImpl();
+    @Mock
+    private RegelnService regelnServiceMock;
 
 
     @Before
     public void setUp() {
-        this.spielerMock = Mockito.mock(SpielerService.class);
-        this.kartenMock = Mockito.mock(KartenService.class);
+        //this.spielerMock = Mockito.mock(SpielerService.class);
+        //this.kartenMock = Mockito.mock(KartenService.class);
         this.spiel = new Spiel();
-        this.spielService = new SpielImpl();
+        //this.spielService = new SpielImpl();
         //this.regelnServiceMock = Mockito.mock(RegelnService.class);
     }
 
@@ -59,7 +61,7 @@ public class SpielImplTest {
         spielService.setSpielerService(spielerMock);
         spielService.setKartenService(kartenMock);
 
-        Assert.assertNotNull(spielService.spielStarten());
+        Assert.assertNotNull(spielService.spielStarten(2));
     }
 
     @Test
@@ -105,9 +107,9 @@ public class SpielImplTest {
         ablagestapel.add(new Karte("Zehn", "Herz"));
         spiel.setAblagestapel(ablagestapel);
 
-        when(regelnServiceMock.checkCard(spiel, new Karte("Zehn", "Schaufel"))).thenReturn(true);
+        Mockito.when(regelnServiceMock.checkCard(spiel, new Karte("Zehn", "Schaufel"))).thenReturn(true);
 
-        spielService.setRegelnService(regelnServiceMock);
+        //spielService.setRegelnService(regelnServiceMock);
 
         spielService.karteLegen(spiel.getSpieler().get(0).getHand().get(1), spiel);
 

@@ -13,7 +13,7 @@ public interface SpielService {
      * Es wird ein neues Spiel gestartet und die Karten ausgeteilt.
      *
      */
-    public Spiel spielStarten();
+    public Spiel spielStarten(int anzahlSpieler);
 
     /**
      * Wird von der Methode spielStarten aufgerufen und gibt die Karten bei Spielbeginn an die Spieler aus.
