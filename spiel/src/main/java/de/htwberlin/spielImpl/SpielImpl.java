@@ -7,19 +7,33 @@ import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
 import de.htwberlin.spielerService.Spieler;
 import de.htwberlin.spielerService.SpielerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class SpielImpl implements SpielService {
 
     private KartenService kartenService;
     private SpielerService spielerService;
     private RegelnService regelnService;
+    private Spiel spiel;
+
+    @Autowired
+    public SpielImpl(KartenService kartenService, SpielerService spielerService, RegelnService regelnService) {
+        this.kartenService = kartenService;
+        this.spielerService = spielerService;
+        this.regelnService = regelnService;
+        //this.spiel = spiel;
+    }
+
+    public SpielImpl() {}
 
     public Spiel spielStarten(int anzahlSpieler) {
 
-        Spiel spiel = new Spiel();
+        spiel = new Spiel();
 
         List<Spieler> spieler = spielerService.spielerErzeugen(anzahlSpieler);
 
@@ -28,7 +42,6 @@ public class SpielImpl implements SpielService {
         kartenGeben(spiel);
 
         return spiel;
-
     }
 
     public void kartenGeben(Spiel spiel) {

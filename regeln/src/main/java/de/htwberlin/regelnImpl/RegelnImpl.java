@@ -1,6 +1,5 @@
 package de.htwberlin.regelnImpl;
 
-//import de.htwberlin.Spielfeld;
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
@@ -8,8 +7,6 @@ import de.htwberlin.regelnService.Spiel;
 import java.util.List;
 
 public class RegelnImpl implements RegelnService {
-
-    //Spielfeld spielfeld;
 
     public boolean checkCard(Spiel spiel, Karte karte) {
 

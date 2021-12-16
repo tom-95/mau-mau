@@ -3,15 +3,20 @@ package de.htwberlin;
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+@Component
 public class Spielfeld extends JPanel {
 
     private JPanel mySide;
@@ -23,7 +28,8 @@ public class Spielfeld extends JPanel {
     private Spiel spiel;
     private Map<Karte, JButton> buttons = new HashMap<>();
 
-    Spielfeld() {
+    @Autowired
+    Spielfeld(SpielService spielService) {
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(1200, 800));
@@ -50,7 +56,7 @@ public class Spielfeld extends JPanel {
 
         setVisible(true);
 
-        spielStarten();
+        this.spielService = spielService;
 
     }
 
@@ -60,8 +66,20 @@ public class Spielfeld extends JPanel {
 
         int x = JOptionPane.showOptionDialog(null, "Wie viele Spieler seid ihr?", "Anzahl Spieler", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-        spielService.spielStarten(x);
+        spiel = spielService.spielStarten(x+2);
 
+        zug();
+
+    }
+
+    public void zug() {
+
+        List<Karte> hand = spiel.getSpieler().get(spiel.getAmZug()).getHand();
+        for (Karte karte : hand)
+            karteHinzufügen(karte);
+
+        Karte letzteKarte = spiel.getAblagestapel().get(spiel.getAblagestapel().size()-1);
+        letzteKarteAendern(letzteKarte);
     }
 
     public String farbeWaehlen() {

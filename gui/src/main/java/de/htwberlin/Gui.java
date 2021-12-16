@@ -1,10 +1,17 @@
 package de.htwberlin;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import javax.swing.*;
 
+@Component
 public class Gui extends JFrame {
 
-    Gui() {
+    private Spielfeld spielfeld;
+
+    @Autowired
+    Gui(Spielfeld spielfeld) {
 
         setSize(1200, 800);
         setResizable(false);
@@ -13,17 +20,19 @@ public class Gui extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        add(new Spielfeld());
+        add(spielfeld);
 
         pack();
 
-    }
-
-    public static void main(String[] args) {
-
-        JFrame app = new Gui();
-        app.setVisible(true);
+        setVisible(true);
 
     }
+
+//    public static void main(String[] args) {
+//
+//        JFrame app = new Gui();
+//        app.setVisible(true);
+//
+//    }
 
 }
