@@ -37,9 +37,9 @@ public class SpielImpl implements SpielService {
 
         for (Spieler spieler : spiel.getSpieler()) {
             deck = spiel.getKartendeck();
-            List<Karte> hand = deck.subList(0,7);
-            List<Karte> deckCopy = deck;
-            deck.removeIf(x-> deckCopy.indexOf(x)>=0&& deckCopy.indexOf(x)<7);
+            List<Karte> deckCopy = new ArrayList<>(deck);
+            List<Karte> hand = deckCopy.subList(0,7);
+            deck.removeIf(x-> deckCopy.indexOf(x)>=0 && deckCopy.indexOf(x)<7);
             spiel.setKartendeck(deck);
             spieler.setHand(hand);
         }
@@ -47,8 +47,7 @@ public class SpielImpl implements SpielService {
         deck = spiel.getKartendeck();
         List<Karte> ablagestapel = new ArrayList<>();
         ablagestapel.add(deck.get(0));
-        List<Karte> deckCopy = deck;
-        deck.removeIf(x-> deckCopy.indexOf(x)==0);
+        deck.remove(0);
         spiel.setKartendeck(deck);
         spiel.setAblagestapel(ablagestapel);
 
@@ -70,6 +69,8 @@ public class SpielImpl implements SpielService {
     @Override
     public void karteLegen(Karte karte, Spiel spiel) {
 
+        int aktuellerSpieler = spiel.getAmZug();
+
         if(regelnService.checkCard(spiel, karte)) {
             List<Karte> ablagestapel = spiel.getAblagestapel();
             ablagestapel.add(karte);
@@ -80,9 +81,11 @@ public class SpielImpl implements SpielService {
                 regelnService.handleSieben(spiel);
             //if(karte.getWert().equals("Bube"))
                 //regelnService.handleBube(spiel);
-        }
+            List<Karte> hand = spiel.getSpieler().get(aktuellerSpieler).getHand();
+            hand.remove(karte);
+            spiel.getSpieler().get(aktuellerSpieler).setHand(hand);
 
-        int aktuellerSpieler = spiel.getAmZug();
+        }
 
         if(!karte.getWert().equals("Ass")) {
             if (aktuellerSpieler + 1 < spiel.getSpieler().size())
@@ -103,15 +106,18 @@ public class SpielImpl implements SpielService {
     @Override
     public void setKartenService(KartenService kartenService) {
 
+        this.kartenService = kartenService;
     }
 
     @Override
     public void setSpielerService(SpielerService spielerService) {
 
+        this.spielerService = spielerService;
     }
 
     @Override
     public void setRegelnService(RegelnService regelnService) {
+
         this.regelnService = regelnService;
     }
 }

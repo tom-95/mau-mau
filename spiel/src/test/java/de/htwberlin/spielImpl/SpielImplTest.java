@@ -2,7 +2,6 @@ package de.htwberlin.spielImpl;
 
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.kartenService.KartenService;
-import de.htwberlin.regelnImpl.RegelnImpl;
 import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
@@ -15,7 +14,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -26,12 +24,13 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class SpielImplTest {
 
-    private Karte karte;
     private Spiel spiel;
     private Spieler spieler;
     @InjectMocks
     private SpielService spielService = new SpielImpl();
+    @Mock
     private KartenService kartenMock;
+    @Mock
     private SpielerService spielerMock;
     @Mock
     private RegelnService regelnServiceMock;
@@ -39,11 +38,7 @@ public class SpielImplTest {
 
     @Before
     public void setUp() {
-        //this.spielerMock = Mockito.mock(SpielerService.class);
-        //this.kartenMock = Mockito.mock(KartenService.class);
         this.spiel = new Spiel();
-        //this.spielService = new SpielImpl();
-        //this.regelnServiceMock = Mockito.mock(RegelnService.class);
     }
 
     @Test
@@ -53,10 +48,12 @@ public class SpielImplTest {
         List<Spieler> spieler = new ArrayList<>();
         spieler.add(spieler1);
         spieler.add(spieler2);
-        List<Karte> karten = new ArrayList<>();
+        List<Karte> deck = new ArrayList<>();
+        for(int i=0; i<32; i++)
+            deck.add(new Karte("", ""));
 
         when(spielerMock.spielerErzeugen(2)).thenReturn(spieler);
-        when(kartenMock.deckErzeugen()).thenReturn(karten);
+        when(kartenMock.deckErzeugen()).thenReturn(deck);
 
         spielService.setSpielerService(spielerMock);
         spielService.setKartenService(kartenMock);
@@ -66,8 +63,11 @@ public class SpielImplTest {
 
     @Test
     public void testKartenGeben() {
+        List<Karte> deck = new ArrayList<>();
+        for(int i=0; i<32; i++)
+            deck.add(new Karte("", ""));
+        spiel.setKartendeck(deck);
         List<Spieler> spieler = new ArrayList<>();
-
         spieler.add(new Spieler("spieler1"));
         spieler.add(new Spieler("spieler2"));
         spiel.setSpieler(spieler);
@@ -79,8 +79,11 @@ public class SpielImplTest {
 
     @Test
     public void testZiehen() {
+        List<Karte> deck = new ArrayList<>();
+        deck.add(new Karte("Sieben", "Herz"));
+        deck.add(new Karte("Zehn", "Schaufel"));
+        spiel.setKartendeck(deck);
         spieler = new Spieler("testSpieler");
-        spiel = new Spiel();
         List<Karte> hand = spieler.getHand();
         Integer size = hand.size();
         spiel.setSpieler(List.of(spieler));
@@ -95,8 +98,10 @@ public class SpielImplTest {
 
         List<Spieler> spieler = new ArrayList<>();
         List<Karte> hand = new ArrayList<>();
-        hand.add(new Karte("Sieben", "Herz"));
-        hand.add(new Karte("Zehn", "Schaufel"));
+        Karte karte1 = new Karte("Sieben", "Herz");
+        Karte karte2 = new Karte("Zehn", "Schaufel");
+        hand.add(karte1);
+        hand.add(karte2);
 
         spieler.add(new Spieler("spieler1"));
         spieler.add(new Spieler("spieler2"));
@@ -107,14 +112,12 @@ public class SpielImplTest {
         ablagestapel.add(new Karte("Zehn", "Herz"));
         spiel.setAblagestapel(ablagestapel);
 
-        Mockito.when(regelnServiceMock.checkCard(spiel, new Karte("Zehn", "Schaufel"))).thenReturn(true);
-
-        //spielService.setRegelnService(regelnServiceMock);
+        Mockito.when(regelnServiceMock.checkCard(spiel, karte2)).thenReturn(true);
 
         spielService.karteLegen(spiel.getSpieler().get(0).getHand().get(1), spiel);
 
         Assert.assertEquals(1, spiel.getSpieler().get(0).getHand().size());
-        Assert.assertEquals(1, spiel.getAblagestapel().size());
+        Assert.assertEquals(2, spiel.getAblagestapel().size());
     }
 
     @Test
