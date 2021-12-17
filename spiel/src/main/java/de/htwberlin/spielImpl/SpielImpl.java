@@ -63,13 +63,23 @@ public class SpielImpl implements SpielService {
         deck.remove(0);
         spiel.setKartendeck(deck);
         spiel.setAblagestapel(ablagestapel);
-
     }
 
     @Override
     public void ziehen(Spiel spiel) {
 
         List<Karte> deck = spiel.getKartendeck();
+
+        if (deck.size() == 0) {
+            List<Karte> ablagestapel = spiel.getAblagestapel();
+            Karte letzteKarte = ablagestapel.get(ablagestapel.size()-1);
+            ablagestapel.remove(ablagestapel.size()-1);
+            kartenService.mischen(ablagestapel);
+            spiel.setKartendeck(ablagestapel);
+            spiel.setAblagestapel(List.of(letzteKarte));
+        }
+
+        deck = spiel.getKartendeck();
         Karte karte = deck.get(0);
         deck.remove(0);
         spiel.setKartendeck(deck);
@@ -84,36 +94,23 @@ public class SpielImpl implements SpielService {
 
         int aktuellerSpieler = spiel.getAmZug();
 
-        if(regelnService.checkCard(spiel, karte)) {
-            List<Karte> ablagestapel = spiel.getAblagestapel();
-            ablagestapel.add(karte);
-            spiel.setAblagestapel(ablagestapel);
-            if(karte.getWert().equals("Ass"))
-                regelnService.handleAss(spiel);
-            if(karte.getWert().equals("Sieben"))
-                regelnService.handleSieben(spiel);
-            //if(karte.getWert().equals("Bube"))
-                //regelnService.handleBube(spiel);
-            List<Karte> hand = spiel.getSpieler().get(aktuellerSpieler).getHand();
-            hand.remove(karte);
-            spiel.getSpieler().get(aktuellerSpieler).setHand(hand);
+        List<Karte> ablagestapel = spiel.getAblagestapel();
+        ablagestapel.add(karte);
+        spiel.setAblagestapel(ablagestapel);
+        if(karte.getWert().equals("Ass"))
+            regelnService.handleAss(spiel);
+        if(karte.getWert().equals("7"))
+            regelnService.handleSieben(spiel);
+        List<Karte> hand = spiel.getSpieler().get(aktuellerSpieler).getHand();
+        hand.remove(karte);
+        spiel.getSpieler().get(aktuellerSpieler).setHand(hand);
 
         }
-
-        if(!karte.getWert().equals("Ass")) {
-            if (aktuellerSpieler + 1 < spiel.getSpieler().size())
-                aktuellerSpieler += 1;
-            else
-                aktuellerSpieler = 0;
-            spiel.setAmZug(aktuellerSpieler);
-        }
-    }
 
     @Override
     public void mauSagen(Spiel spiel) {
 
         spiel.getSpieler().get(spiel.getAmZug()).setMauGesagt(true);
-
     }
 
     @Override
@@ -133,4 +130,5 @@ public class SpielImpl implements SpielService {
 
         this.regelnService = regelnService;
     }
+
 }

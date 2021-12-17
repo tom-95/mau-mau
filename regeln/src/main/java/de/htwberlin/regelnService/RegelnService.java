@@ -33,5 +33,5 @@ public interface RegelnService {
      *
      * @param spiel- Das aktuelle Spiel.
      */
-    //public void handleBube(Spiel spiel);
+    public void handleBube(Spiel spiel, String farbe);
 }

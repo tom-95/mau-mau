@@ -1,6 +1,8 @@
 package de.htwberlin;
 
+import de.htwberlin.kartenImpl.KartenImpl;
 import de.htwberlin.kartenService.Karte;
+import de.htwberlin.kartenService.KartenService;
 import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,14 @@ public class Spielfeld extends JPanel {
 
     private JPanel mySide;
     private JPanel otherSide;
+    private JPanel bottom = new JPanel();
     private JLabel lastCardLabel = new JLabel();
     private JLabel opponent = new JLabel();
     private JLabel colourChoose = new JLabel();
+    private JLabel player = new JLabel();
     private SpielService spielService;
     private Spiel spiel;
+    private KartenService kartenService;
     private Map<Karte, JButton> buttons = new HashMap<>();
 
     @Autowired
@@ -39,24 +44,34 @@ public class Spielfeld extends JPanel {
         otherSide.setPreferredSize(new Dimension(1200, 200));
         this.add(mySide, BorderLayout.CENTER);
         this.add(otherSide, BorderLayout.NORTH);
+        this.add(bottom, BorderLayout.SOUTH);
         JButton stackButton = new JButton(new ImageIcon(CardImageGenerator.generateBack()));
         otherSide.add(stackButton);
         stackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                spielService.ziehen(spiel);
+
+                if (spiel.getZiehZaehler() == 0) {
+                    spielService.ziehen(spiel);
+                } else {
+                    for (int i = 0; i < spiel.getZiehZaehler(); i++){
+                        spielService.ziehen(spiel);
+                    }
+                }
+                naechsterSpieler();
+                handAktualisieren();
+                spiel.setZiehZaehler(0);
             }
         });
 
         otherSide.add(lastCardLabel);
-
         otherSide.add(opponent);
-
         otherSide.add(colourChoose);
-
-        setVisible(true);
+        bottom.add(player);
 
         this.spielService = spielService;
+
+        setVisible(true);
 
     }
 
@@ -68,18 +83,27 @@ public class Spielfeld extends JPanel {
 
         spiel = spielService.spielStarten(x+2);
 
-        zug();
+        spielController();
 
     }
 
-    public void zug() {
+    public void spielController() {
+
+        spielfeldAnzeigen();
+
+    }
+
+    public void spielfeldAnzeigen() {
 
         List<Karte> hand = spiel.getSpieler().get(spiel.getAmZug()).getHand();
         for (Karte karte : hand)
-            karteHinzufügen(karte);
+            karteAnzeigen(karte);
 
-        Karte letzteKarte = spiel.getAblagestapel().get(spiel.getAblagestapel().size()-1);
-        letzteKarteAendern(letzteKarte);
+        Karte letzteKarteAblage = spiel.getAblagestapel().get(spiel.getAblagestapel().size()-1);
+        letzteKarteAendern(letzteKarteAblage);
+        revalidate();
+        repaint();
+
     }
 
     public String farbeWaehlen() {
@@ -92,10 +116,13 @@ public class Spielfeld extends JPanel {
 
     }
 
-    public void farbeWaehlen(String farbe) {
+    public void gewaehlteFarbe(String farbe) {
 
-        colourChoose.setText("Dein Gegner waehlt " + farbe);
-
+        if (farbe.equals("")) {
+            colourChoose.setText("");
+        } else {
+            colourChoose.setText("Dein Gegner waehlt " + farbe);
+        }
     }
 
     public void letzteKarteAendern(Karte karte) {
@@ -110,13 +137,31 @@ public class Spielfeld extends JPanel {
     public void karteVonSpielfeldEntfernen(Karte karte) {
 
         JButton button = buttons.get(karte);
+        buttons.remove(karte);
         mySide.remove(button);
         revalidate();
         repaint();
 
     }
 
-    public void karteHinzufügen(Karte karte) {
+    public void handAktualisieren() {
+
+        buttons.clear();
+        mySide.removeAll();
+
+        String spielerName = spiel.getSpieler().get(spiel.getAmZug()).getName();
+        player.setText(spielerName);
+
+        List<Karte> hand = spiel.getSpieler().get(spiel.getAmZug()).getHand();
+        for (Karte karte : hand)
+            karteAnzeigen(karte);
+
+        revalidate();
+        repaint();
+
+    }
+
+    public void karteAnzeigen(Karte karte) {
 
         BufferedImage image = CardImageGenerator.generateImage(karte);
         JButton button = new JButton(new ImageIcon(image));
@@ -137,4 +182,13 @@ public class Spielfeld extends JPanel {
 
     }
 
+    public void naechsterSpieler() {
+
+        if (spiel.getAmZug() == (spiel.getSpieler().size() - 1)) {
+            spiel.setAmZug(0);
+        } else {
+            spiel.setAmZug(spiel.getAmZug() + 1);
+        }
+
+    }
 }

@@ -60,6 +60,7 @@ public class RegelnImplTest {
         spieler.add(new Spieler("spieler2"));
         spieler.add(new Spieler("spieler3"));
         spiel.setSpieler(spieler);
+        spiel.setAmZug(0);
 
         regeln.handleAss(spiel);
         int aktuellerSpieler = spiel.getAmZug();

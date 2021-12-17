@@ -47,12 +47,11 @@ public class Config {
     public static void main( String[] args ) {
 
         ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-//        KartenService kartenService = context.getBean(KartenImpl.class);
-//        RegelnService regelnService = context.getBean(RegelnImpl.class);
-//        SpielService spielService = context.getBean(SpielImpl.class);
-//        SpielerService spielerService = context.getBean(SpielerImpl.class);
+//      KartenService kartenService = context.getBean(KartenImpl.class);
+//      RegelnService regelnService = context.getBean(RegelnImpl.class);
+//      SpielService spielService = context.getBean(SpielImpl.class);
+//      SpielerService spielerService = context.getBean(SpielerImpl.class);
         Spielfeld spielfeld = context.getBean(Spielfeld.class);
-        //Gui gui = context.getBean(Gui.class);
 
         spielfeld.spielStarten();
 
