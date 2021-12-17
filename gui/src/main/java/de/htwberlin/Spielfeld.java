@@ -45,6 +45,7 @@ public class Spielfeld extends JPanel {
         this.add(mySide, BorderLayout.CENTER);
         this.add(otherSide, BorderLayout.NORTH);
         this.add(bottom, BorderLayout.SOUTH);
+        JButton mauButton = new JButton(new String("Mau sagen!"));
         JButton stackButton = new JButton(new ImageIcon(CardImageGenerator.generateBack()));
         otherSide.add(stackButton);
         stackButton.addActionListener(new ActionListener() {
@@ -68,6 +69,14 @@ public class Spielfeld extends JPanel {
         otherSide.add(opponent);
         otherSide.add(colourChoose);
         bottom.add(player);
+
+        otherSide.add(mauButton);
+        mauButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                spiel.getSpieler().get(spiel.getAmZug()).setMauGesagt(true);
+            }
+        });
 
         this.spielService = spielService;
 
@@ -101,6 +110,7 @@ public class Spielfeld extends JPanel {
 
         Karte letzteKarteAblage = spiel.getAblagestapel().get(spiel.getAblagestapel().size()-1);
         letzteKarteAendern(letzteKarteAblage);
+        handAktualisieren();
         revalidate();
         repaint();
 

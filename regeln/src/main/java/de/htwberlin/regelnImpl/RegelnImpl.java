@@ -10,6 +10,14 @@ public class RegelnImpl implements RegelnService {
 
     public boolean checkCard(Spiel spiel, Karte karte) {
 
+        if (spiel.getSpieler().get(spiel.getAmZug()).getHand().size() == 1) {
+            if (!spiel.getSpieler().get(spiel.getAmZug()).isMauGesagt()) {
+                return false;
+            } if (spiel.getSpieler().get(spiel.getAmZug()).getKartenZaehler() == 1) {
+                return true;
+            }
+        }
+
         List<Karte> ablagestapel = spiel.getAblagestapel();
         Karte letzteKarte = ablagestapel.get(ablagestapel.size()-1);
 

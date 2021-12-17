@@ -12,7 +12,7 @@ public class SpielerImpl implements SpielerService {
 
         List<Spieler> spielerListe = new ArrayList<>();
         for(int i=0; i<anzahlSpieler; i++) {
-            Spieler spieler = new Spieler("spieler" + i + 1);
+            Spieler spieler = new Spieler("Spieler " + (i+1));
             spielerListe.add(spieler);
         }
         return spielerListe;

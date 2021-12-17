@@ -32,9 +32,6 @@ public class SpielImplTest {
     private KartenService kartenMock;
     @Mock
     private SpielerService spielerMock;
-    @Mock
-    private RegelnService regelnServiceMock;
-
 
     @Before
     public void setUp() {
@@ -60,7 +57,7 @@ public class SpielImplTest {
         spielService.setSpielerService(spielerMock);
         spielService.setKartenService(kartenMock);
 
-        //Assert.assertNotNull(spielService.spielStarten(2));
+        Assert.assertNotNull(spielService.spielStarten(2));
     }
 
     @Test
@@ -113,8 +110,6 @@ public class SpielImplTest {
         List<Karte> ablagestapel = new ArrayList<>();
         ablagestapel.add(new Karte("Zehn", "Herz"));
         spiel.setAblagestapel(ablagestapel);
-
-        Mockito.when(regelnServiceMock.checkCard(spiel, karte2)).thenReturn(true);
 
         spielService.karteLegen(spiel.getSpieler().get(0).getHand().get(1), spiel);
 

@@ -23,6 +23,11 @@ public class Spieler {
     private List<Karte> hand = new ArrayList<Karte>();
 
     /**
+     * Beinhaltet die Anzahl der gelegten Karten seit dem letzten Mau sagen.
+     */
+    private Integer kartenZaehler = 0;
+
+    /**
      * Konstruktor der Klasse Spieler.
      * @param name Name des Spielers
      */
@@ -44,6 +49,7 @@ public class Spieler {
 
     public void setMauGesagt(boolean mauGesagt) {
         this.mauGesagt = mauGesagt;
+        this.setKartenZaehler(0);
     }
 
     public List<Karte> getHand() {
@@ -52,5 +58,13 @@ public class Spieler {
 
     public void setHand(List<Karte> hand) {
         this.hand = hand;
+    }
+
+    public Integer getKartenZaehler() {
+        return kartenZaehler;
+    }
+
+    public void setKartenZaehler(Integer kartenZaehler) {
+        this.kartenZaehler = kartenZaehler;
     }
 }
