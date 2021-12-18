@@ -1,11 +1,11 @@
 package de.htwberlin;
 
-import de.htwberlin.kartenImpl.KartenImpl;
 import de.htwberlin.kartenService.Karte;
-import de.htwberlin.kartenService.KartenService;
 import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
 import de.htwberlin.spielerService.Spieler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +15,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class Spielfeld extends JPanel {
+    private static Logger LOGGER = LogManager.getLogger(Spielfeld.class);
 
     private JPanel mySide;
     private JPanel otherSide;
@@ -31,11 +30,10 @@ public class Spielfeld extends JPanel {
     private JLabel player = new JLabel();
     private SpielService spielService;
     private Spiel spiel;
-    private KartenService kartenService;
-    private Map<Karte, JButton> buttons = new HashMap<>();
 
     @Autowired
     Spielfeld(SpielService spielService) {
+        LOGGER.debug("Spielfeld erzeugt!");
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(1200, 800));
@@ -86,6 +84,7 @@ public class Spielfeld extends JPanel {
     }
 
     public void spielStarten() {
+        LOGGER.debug("Spiel gestartet!");
 
         Integer[] options = {2, 3, 4};
 
@@ -102,6 +101,7 @@ public class Spielfeld extends JPanel {
     }
 
     public void spielfeldAnzeigen() {
+        LOGGER.debug("Spielfeld wird angezeigt.");
 
         List<Karte> hand = spiel.getSpieler().get(spiel.getAmZug()).getHand();
         for (Karte karte : hand)
@@ -112,7 +112,7 @@ public class Spielfeld extends JPanel {
         handAktualisieren();
         revalidate();
         repaint();
-
+        LOGGER.debug("Spielfeld vollständig erzeugt.");
     }
 
     public String farbeWaehlen() {
@@ -143,19 +143,8 @@ public class Spielfeld extends JPanel {
 
     }
 
-    public void karteVonSpielfeldEntfernen(Karte karte) {
-
-        JButton button = buttons.get(karte);
-        buttons.remove(karte);
-        mySide.remove(button);
-        revalidate();
-        repaint();
-
-    }
-
     public void handAktualisieren() {
-
-        buttons.clear();
+        LOGGER.debug("Hand wird aktualisiert.");
         mySide.removeAll();
 
         String spielerName = spiel.getSpieler().get(spiel.getAmZug()).getName();
@@ -167,6 +156,7 @@ public class Spielfeld extends JPanel {
 
         revalidate();
         repaint();
+        LOGGER.debug("Hand wurde aktualisiert.");
 
     }
 
@@ -174,7 +164,6 @@ public class Spielfeld extends JPanel {
 
         BufferedImage image = CardImageGenerator.generateImage(karte);
         JButton button = new JButton(new ImageIcon(image));
-        buttons.put(karte, button);
         mySide.add(button);
         button.addActionListener(new CardListener(this, karte, spiel, spielService, button));
         revalidate();
@@ -189,12 +178,12 @@ public class Spielfeld extends JPanel {
     }
 
     public void naechsterSpieler() {
+        LOGGER.debug("Nächster Spieler wird gewählt.");
 
         if (spiel.getAmZug() == (spiel.getSpieler().size() - 1)) {
             spiel.setAmZug(0);
         } else {
             spiel.setAmZug(spiel.getAmZug() + 1);
         }
-
     }
 }

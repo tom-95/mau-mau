@@ -1,7 +1,5 @@
 package de.htwberlin.spielerService;
 
-import de.htwberlin.kartenService.Karte;
-
 import java.util.List;
 
 public interface SpielerService {

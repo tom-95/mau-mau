@@ -7,10 +7,8 @@ import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 public class CardListener implements ActionListener {
 

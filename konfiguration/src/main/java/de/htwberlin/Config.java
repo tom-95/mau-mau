@@ -29,28 +29,15 @@ public class Config {
         return new RegelnImpl();
     }
 
-//    @Bean
-//    public SpielService spielService() {
-//        return new SpielImpl();
-//    }
-
     @Bean
     public SpielerService spielerService() {
         return new SpielerImpl();
     }
 
-    @Bean
-    public Spiel spiel() {
-        return new Spiel();
-    }
 
     public static void main( String[] args ) {
 
         ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-//      KartenService kartenService = context.getBean(KartenImpl.class);
-//      RegelnService regelnService = context.getBean(RegelnImpl.class);
-//      SpielService spielService = context.getBean(SpielImpl.class);
-//      SpielerService spielerService = context.getBean(SpielerImpl.class);
         Spielfeld spielfeld = context.getBean(Spielfeld.class);
 
         spielfeld.spielStarten();

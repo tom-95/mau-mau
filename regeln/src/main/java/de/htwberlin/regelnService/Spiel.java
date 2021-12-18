@@ -75,9 +75,7 @@ public class Spiel {
         return wunschfarbe;
     }
 
-    public void setWunschfarbe(String wunschfarbe) {
-        this.wunschfarbe = wunschfarbe;
-    }
+    public void setWunschfarbe(String wunschfarbe) { this.wunschfarbe = wunschfarbe; }
 
     public List<Karte> getKartendeck() { return kartendeck; }
 

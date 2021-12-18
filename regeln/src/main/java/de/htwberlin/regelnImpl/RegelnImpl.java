@@ -3,12 +3,16 @@ package de.htwberlin.regelnImpl;
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class RegelnImpl implements RegelnService {
+    private static Logger LOGGER = LogManager.getLogger(RegelnImpl.class);
 
     public boolean checkCard(Spiel spiel, Karte karte) {
+        LOGGER.debug("Karte wird gecheckt.");
 
         if (spiel.getSpieler().get(spiel.getAmZug()).getHand().size() == 1) {
             if (!spiel.getSpieler().get(spiel.getAmZug()).isMauGesagt()) {
@@ -47,20 +51,10 @@ public class RegelnImpl implements RegelnService {
     }
 
     public void handleAss(Spiel spiel) {
-
-//        int aktuellerSpieler = spiel.getAmZug();
-//
-//        if (aktuellerSpieler )
-//
-//
-//
-//        if (spiel.getAmZug() == (spiel.getSpieler().size() - 1)) {
-//            spiel.setAmZug(1);
-//        } else {
-//            spiel.setAmZug(spiel.getAmZug() + 1);
-//        }
+        LOGGER.debug("Ass handling gestartet.");
 
         int aktuellerSpieler = spiel.getAmZug();
+        LOGGER.info("Aktueller Spieler: " + spiel.getSpieler().get(aktuellerSpieler));
 
         if(aktuellerSpieler + 2 < spiel.getSpieler().size())
             aktuellerSpieler += 2;
@@ -71,15 +65,20 @@ public class RegelnImpl implements RegelnService {
 
         spiel.setAmZug(aktuellerSpieler);
 
+        LOGGER.info("Neuer Spieler: " + spiel.getSpieler().get(aktuellerSpieler));
+        LOGGER.debug("Ass handling beendet.");
+
     }
 
     public void handleSieben(Spiel spiel) {
+        LOGGER.debug("Sieben handling gestartet.");
 
         spiel.setZiehZaehler(spiel.getZiehZaehler()+2);
 
     }
 
     public void handleBube(Spiel spiel, String farbe) {
+        LOGGER.debug("Bube handling gestartet.");
 
         spiel.setWunschfarbe(farbe);
 

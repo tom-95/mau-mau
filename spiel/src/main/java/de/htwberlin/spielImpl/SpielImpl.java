@@ -7,6 +7,8 @@ import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
 import de.htwberlin.spielerService.Spieler;
 import de.htwberlin.spielerService.SpielerService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +17,7 @@ import java.util.List;
 
 @Component
 public class SpielImpl implements SpielService {
+    private static Logger LOGGER = LogManager.getLogger(SpielImpl.class);
 
     private KartenService kartenService;
     private SpielerService spielerService;
@@ -26,12 +29,13 @@ public class SpielImpl implements SpielService {
         this.kartenService = kartenService;
         this.spielerService = spielerService;
         this.regelnService = regelnService;
-        //this.spiel = spiel;
+
     }
 
     public SpielImpl() {}
 
     public Spiel spielStarten(int anzahlSpieler) {
+        LOGGER.debug("Spiel wird gestartet.");
 
         spiel = new Spiel();
 
@@ -45,6 +49,7 @@ public class SpielImpl implements SpielService {
     }
 
     public void kartenGeben(Spiel spiel) {
+        LOGGER.debug("Karten werden ausgegeben.");
 
         List<Karte> deck;
 
@@ -67,6 +72,7 @@ public class SpielImpl implements SpielService {
 
     @Override
     public void ziehen(Spiel spiel) {
+        LOGGER.debug("Karte wird gezogen");
 
         List<Karte> deck = spiel.getKartendeck();
 
@@ -88,10 +94,13 @@ public class SpielImpl implements SpielService {
         spiel.getSpieler().get(spiel.getAmZug()).setHand(hand);
         spiel.getSpieler().get(spiel.getAmZug()).setZugZaehler(spiel.getSpieler().get(spiel.getAmZug()).getZugZaehler() + 1);
 
+        LOGGER.info("Es befinden sich noch " + deck.size() + " Karten im Deck.");
+
     }
 
     @Override
     public void karteLegen(Karte karte, Spiel spiel) {
+        LOGGER.debug("Karte wird gelegt.");
 
         int aktuellerSpieler = spiel.getAmZug();
 
@@ -111,6 +120,7 @@ public class SpielImpl implements SpielService {
 
     @Override
     public void mauSagen(Spiel spiel) {
+        LOGGER.debug("Mau sagen aufgerufen.");
 
         if (spiel.getSpieler().get(spiel.getAmZug()).getHand().size() != 2) {
 

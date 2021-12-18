@@ -2,7 +2,6 @@ package de.htwberlin.spielImpl;
 
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.kartenService.KartenService;
-import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
 import de.htwberlin.spielerService.Spieler;
@@ -13,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -124,9 +122,15 @@ public class SpielImplTest {
         spieler.add(new Spieler("spieler1"));
         spieler.add(new Spieler("spieler2"));
         spiel.setSpieler(spieler);
+        List<Karte> hand = new ArrayList<>();
+        Karte karte1 = new Karte("Sieben", "Herz");
+        Karte karte2 = new Karte("Zehn", "Schaufel");
+        hand.add(karte1);
+        hand.add(karte2);
+        spieler.get(0).setHand(hand);
 
         spielService.mauSagen(spiel);
 
-        Assert.assertTrue(spieler.get(0).isMauGesagt());
+        Assert.assertTrue(spiel.getSpieler().get(0).isMauGesagt());
     }
 }

@@ -4,7 +4,6 @@ import de.htwberlin.kartenService.Karte;
 import de.htwberlin.kartenService.KartenService;
 import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
-import de.htwberlin.spielerService.Spieler;
 import de.htwberlin.spielerService.SpielerService;
 
 public interface SpielService {
@@ -40,7 +39,6 @@ public interface SpielService {
     /**
      * Der Spieler sagt "Mau" und kündigt so das Spielen seiner letzten Karte an.
      *
-     * @param spieler - Der Spieler der mau sagt.
      * @param spiel - Das aktuelle Spiel.
      */
     public void mauSagen(Spiel spiel);

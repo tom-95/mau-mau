@@ -32,9 +32,7 @@ public class Karte {
         this.wert = wert;
     }
 
-    public String getFarbe() {
-        return farbe;
-    }
+    public String getFarbe() { return farbe; }
 
     public void setFarbe(String farbe) {
         this.farbe = farbe;
