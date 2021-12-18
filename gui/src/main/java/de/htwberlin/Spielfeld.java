@@ -66,7 +66,6 @@ public class Spielfeld extends JPanel {
 
         otherSide.add(lastCardLabel);
         otherSide.add(opponent);
-        otherSide.add(colourChoose);
         bottom.add(player);
 
         otherSide.add(mauButton);
@@ -76,6 +75,8 @@ public class Spielfeld extends JPanel {
                 spiel.getSpieler().get(spiel.getAmZug()).setMauGesagt(true);
             }
         });
+
+        otherSide.add(colourChoose);
 
         this.spielService = spielService;
 
@@ -119,7 +120,7 @@ public class Spielfeld extends JPanel {
 
         String[] options = {"Pik", "Karo", "Herz", "Kreuz"};
 
-        int x = JOptionPane.showOptionDialog(null, "Welche Farbe waehlst du?", "Farbe waehlen", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        int x = JOptionPane.showOptionDialog(null, "Welche Farbe wählst du?", "Farbe wählen", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
         return options[x];
 
@@ -130,7 +131,7 @@ public class Spielfeld extends JPanel {
         if (farbe.equals("")) {
             colourChoose.setText("");
         } else {
-            colourChoose.setText("Dein Gegner waehlt " + farbe);
+            colourChoose.setText("Dein Gegner wählt " + farbe);
         }
     }
 

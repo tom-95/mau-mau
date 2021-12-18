@@ -4,11 +4,10 @@ import de.htwberlin.kartenImpl.KartenImpl;
 import de.htwberlin.kartenService.KartenService;
 import de.htwberlin.regelnImpl.RegelnImpl;
 import de.htwberlin.regelnService.RegelnService;
-import de.htwberlin.regelnService.Spiel;
-import de.htwberlin.spielImpl.SpielImpl;
-import de.htwberlin.spielService.SpielService;
 import de.htwberlin.spielerImpl.SpielerImpl;
 import de.htwberlin.spielerService.SpielerService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan("de.htwberlin")
 public class Config {
+    private static Logger LOGGER = LogManager.getLogger(Config.class);
 
     @Bean
     public KartenService kartenService() {
@@ -36,6 +36,7 @@ public class Config {
 
 
     public static void main( String[] args ) {
+        LOGGER.debug("Main-Methode gestartet!");
 
         ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
         Spielfeld spielfeld = context.getBean(Spielfeld.class);
