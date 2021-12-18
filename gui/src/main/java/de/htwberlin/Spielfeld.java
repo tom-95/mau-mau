@@ -1,6 +1,7 @@
 package de.htwberlin;
 
 import de.htwberlin.kartenService.Karte;
+import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
 import de.htwberlin.spielerService.Spieler;
@@ -29,10 +30,11 @@ public class Spielfeld extends JPanel {
     private JLabel colourChoose = new JLabel();
     private JLabel player = new JLabel();
     private SpielService spielService;
+    private RegelnService regelnService;
     private Spiel spiel;
 
     @Autowired
-    Spielfeld(SpielService spielService) {
+    Spielfeld(SpielService spielService, RegelnService regelnService) {
         LOGGER.debug("Spielfeld erzeugt!");
 
         setLayout(new BorderLayout());
@@ -79,6 +81,7 @@ public class Spielfeld extends JPanel {
         otherSide.add(colourChoose);
 
         this.spielService = spielService;
+        this.regelnService = regelnService;
 
         setVisible(true);
 
@@ -166,7 +169,7 @@ public class Spielfeld extends JPanel {
         BufferedImage image = CardImageGenerator.generateImage(karte);
         JButton button = new JButton(new ImageIcon(image));
         mySide.add(button);
-        button.addActionListener(new CardListener(this, karte, spiel, spielService, button));
+        button.addActionListener(new CardListener(this, karte, spiel, spielService, button, regelnService));
         revalidate();
         repaint();
 

@@ -1,7 +1,6 @@
 package de.htwberlin;
 
 import de.htwberlin.kartenService.Karte;
-import de.htwberlin.regelnImpl.RegelnImpl;
 import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
@@ -17,14 +16,15 @@ public class CardListener implements ActionListener {
         Spiel spiel;
         SpielService spielService;
         JButton button;
-        RegelnService regelnService = new RegelnImpl();
+        RegelnService regelnService;
 
-        public CardListener(Spielfeld spielfeld, Karte karte, Spiel spiel, SpielService spielService, JButton button) {
+        public CardListener(Spielfeld spielfeld, Karte karte, Spiel spiel, SpielService spielService, JButton button, RegelnService regelnService) {
                 this.spielfeld = spielfeld;
                 this.karte = karte;
                 this.spiel = spiel;
                 this.spielService = spielService;
                 this.button = button;
+                this.regelnService = regelnService;
         }
 
         @Override
