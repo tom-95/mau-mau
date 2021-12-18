@@ -25,7 +25,7 @@ public class Spieler {
     /**
      * Beinhaltet die Anzahl der gelegten Karten seit dem letzten Mau sagen.
      */
-    private Integer kartenZaehler = 0;
+    private Integer zugZaehler = 0;
 
     /**
      * Konstruktor der Klasse Spieler.
@@ -49,7 +49,7 @@ public class Spieler {
 
     public void setMauGesagt(boolean mauGesagt) {
         this.mauGesagt = mauGesagt;
-        this.setKartenZaehler(0);
+        this.setZugZaehler(0);
     }
 
     public List<Karte> getHand() {
@@ -60,11 +60,11 @@ public class Spieler {
         this.hand = hand;
     }
 
-    public Integer getKartenZaehler() {
-        return kartenZaehler;
+    public Integer getZugZaehler() {
+        return zugZaehler;
     }
 
-    public void setKartenZaehler(Integer kartenZaehler) {
-        this.kartenZaehler = kartenZaehler;
+    public void setZugZaehler(Integer zugZaehler) {
+        this.zugZaehler = zugZaehler;
     }
 }

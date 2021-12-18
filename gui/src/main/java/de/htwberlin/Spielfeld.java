@@ -5,6 +5,7 @@ import de.htwberlin.kartenService.Karte;
 import de.htwberlin.kartenService.KartenService;
 import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
+import de.htwberlin.spielerService.Spieler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -86,17 +87,15 @@ public class Spielfeld extends JPanel {
 
     public void spielStarten() {
 
-        Integer[] options = {2};
+        Integer[] options = {2, 3, 4};
 
         int x = JOptionPane.showOptionDialog(null, "Wie viele Spieler seid ihr?", "Anzahl Spieler", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
+        if (x == JOptionPane.CLOSED_OPTION) {
+            System.exit(0);
+        }
+
         spiel = spielService.spielStarten(x+2);
-
-        spielController();
-
-    }
-
-    public void spielController() {
 
         spielfeldAnzeigen();
 
@@ -183,13 +182,10 @@ public class Spielfeld extends JPanel {
 
     }
 
-    public void showWinningMessage(String wer) {
+    public void showWinningMessage(Spieler spieler) {
 
-        if (wer.equals("ich"))
-            JOptionPane.showMessageDialog(null, "Du hast gewonnen!", "WIN", JOptionPane.INFORMATION_MESSAGE);
-        else
-            JOptionPane.showMessageDialog(null, "Dein Gegner hat gewonnen!", "Loser", JOptionPane.INFORMATION_MESSAGE);
-
+        JOptionPane.showMessageDialog(null, spieler.getName() + ", du hast gewonnen!", "WIN", JOptionPane.INFORMATION_MESSAGE);
+        System.exit(0);
     }
 
     public void naechsterSpieler() {

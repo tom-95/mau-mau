@@ -86,6 +86,7 @@ public class SpielImpl implements SpielService {
         List<Karte> hand = spiel.getSpieler().get(spiel.getAmZug()).getHand();
         hand.add(karte);
         spiel.getSpieler().get(spiel.getAmZug()).setHand(hand);
+        spiel.getSpieler().get(spiel.getAmZug()).setZugZaehler(spiel.getSpieler().get(spiel.getAmZug()).getZugZaehler() + 1);
 
     }
 
@@ -104,14 +105,15 @@ public class SpielImpl implements SpielService {
         List<Karte> hand = spiel.getSpieler().get(aktuellerSpieler).getHand();
         hand.remove(karte);
         spiel.getSpieler().get(aktuellerSpieler).setHand(hand);
-        spiel.getSpieler().get(aktuellerSpieler).setKartenZaehler(spiel.getSpieler().get(aktuellerSpieler).getKartenZaehler() + 1);
+        spiel.getSpieler().get(aktuellerSpieler).setZugZaehler(spiel.getSpieler().get(aktuellerSpieler).getZugZaehler() + 1);
 
         }
 
     @Override
     public void mauSagen(Spiel spiel) {
 
-        if (spiel.getSpieler().get(spiel.getAmZug()).getHand().size() == 1) {
+        if (spiel.getSpieler().get(spiel.getAmZug()).getHand().size() != 2) {
+
             return;
         }
         spiel.getSpieler().get(spiel.getAmZug()).setMauGesagt(true);

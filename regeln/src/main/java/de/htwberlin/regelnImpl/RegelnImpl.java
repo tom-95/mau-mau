@@ -13,8 +13,9 @@ public class RegelnImpl implements RegelnService {
         if (spiel.getSpieler().get(spiel.getAmZug()).getHand().size() == 1) {
             if (!spiel.getSpieler().get(spiel.getAmZug()).isMauGesagt()) {
                 return false;
-            } if (spiel.getSpieler().get(spiel.getAmZug()).getKartenZaehler() == 1) {
-                return true;
+            }
+            if (spiel.getSpieler().get(spiel.getAmZug()).getZugZaehler() != 1) {
+                return false;
             }
         }
 

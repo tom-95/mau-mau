@@ -42,6 +42,10 @@ public class CardListener implements ActionListener {
                             spielfeld.gewaehlteFarbe("");
                     }
                     spielfeld.letzteKarteAendern(karte);
+                    if (spiel.getSpieler().get(spiel.getAmZug()).getHand().size() == 0) {
+                            spielfeld.handAktualisieren();
+                            spielfeld.showWinningMessage(spiel.getSpieler().get(spiel.getAmZug()));
+                    }
                     if (!karte.getWert().equals("Ass")) {
                             spielfeld.naechsterSpieler();
                     }
