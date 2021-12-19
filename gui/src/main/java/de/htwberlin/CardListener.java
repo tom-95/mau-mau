@@ -31,6 +31,7 @@ public class CardListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
 
             if (regelnService.checkCard(spiel, karte)) {
+                    int aktuellerSpieler = spiel.getAmZug();
                     spielService.karteLegen(karte, spiel);
                     if (karte.getWert().equals("Bube")) {
                             String farbe = spielfeld.farbeWaehlen();
@@ -40,9 +41,9 @@ public class CardListener implements ActionListener {
                             spielfeld.gewaehlteFarbe("");
                     }
                     spielfeld.letzteKarteAendern(karte);
-                    if (spiel.getSpieler().get(spiel.getAmZug()).getHand().size() == 0) {
+                    if (spiel.getSpieler().get(aktuellerSpieler).getHand().size() == 0) {
                             spielfeld.handAktualisieren();
-                            spielfeld.showWinningMessage(spiel.getSpieler().get(spiel.getAmZug()));
+                            spielfeld.showWinningMessage(spiel.getSpieler().get(aktuellerSpieler));
                     }
                     if (!karte.getWert().equals("Ass")) {
                             spielfeld.naechsterSpieler();
