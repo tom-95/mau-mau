@@ -36,7 +36,7 @@ public class Config {
 
 
     public static void main( String[] args ) {
-        LOGGER.error("Main-Methode gestartet!");
+        LOGGER.debug("Main-Methode gestartet!");
 
         ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
         Spielfeld spielfeld = context.getBean(Spielfeld.class);
