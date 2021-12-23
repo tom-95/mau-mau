@@ -107,13 +107,9 @@ public class Spielfeld extends JPanel {
     public void spielfeldAnzeigen() {
         LOGGER.debug("Spielfeld wird angezeigt.");
 
-        List<Karte> hand = spiel.getSpieler().get(spiel.getAmZug()).getHand();
-        for (Karte karte : hand)
-            karteAnzeigen(karte);
-
+        handAktualisieren();
         Karte letzteKarteAblage = spiel.getAblagestapel().get(spiel.getAblagestapel().size()-1);
         letzteKarteAendern(letzteKarteAblage);
-        handAktualisieren();
         revalidate();
         repaint();
         LOGGER.debug("Spielfeld vollständig erzeugt.");

@@ -64,8 +64,13 @@ public class SpielImpl implements SpielService {
 
         deck = spiel.getKartendeck();
         List<Karte> ablagestapel = new ArrayList<>();
-        ablagestapel.add(deck.get(0));
-        deck.remove(0);
+        int i = 0;
+        while(deck.get(i).getWert().equals("Bube")) {
+            i++;
+        }
+        Karte startKarte = deck.get(i);
+        ablagestapel.add(startKarte);
+        deck.remove(i);
         spiel.setKartendeck(deck);
         spiel.setAblagestapel(ablagestapel);
     }

@@ -48,9 +48,9 @@ public class CardListener implements ActionListener {
                     if (!karte.getWert().equals("Ass")) {
                             spielfeld.naechsterSpieler();
                     }
-                    spielfeld.handAktualisieren();
-            } else {
-                    spielfeld.handAktualisieren();
             }
+
+            spielfeld.handAktualisieren();
+
         }
 }
