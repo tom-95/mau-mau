@@ -2,11 +2,13 @@ package de.htwberlin.kartenImpl;
 
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.kartenService.KartenService;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Service
 public class KartenImpl implements KartenService {
 
     public List<Karte> deckErzeugen() {

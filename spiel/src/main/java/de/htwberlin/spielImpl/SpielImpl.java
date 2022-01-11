@@ -10,19 +10,18 @@ import de.htwberlin.spielerService.SpielerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Service
 public class SpielImpl implements SpielService {
     private static Logger LOGGER = LogManager.getLogger(SpielImpl.class);
 
     private KartenService kartenService;
     private SpielerService spielerService;
     private RegelnService regelnService;
-    private Spiel spiel;
 
     @Autowired
     public SpielImpl(KartenService kartenService, SpielerService spielerService, RegelnService regelnService) {
@@ -37,7 +36,7 @@ public class SpielImpl implements SpielService {
     public Spiel spielStarten(int anzahlSpieler) {
         LOGGER.debug("Spiel wird gestartet.");
 
-        spiel = new Spiel();
+        Spiel spiel = new Spiel();
 
         List<Spieler> spieler = spielerService.spielerErzeugen(anzahlSpieler);
 

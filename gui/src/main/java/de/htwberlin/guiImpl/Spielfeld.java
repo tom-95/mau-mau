@@ -1,5 +1,6 @@
-package de.htwberlin;
+package de.htwberlin.guiImpl;
 
+import de.htwberlin.guiService.SpielfeldService;
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
@@ -8,7 +9,7 @@ import de.htwberlin.spielerService.Spieler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.swing.*;
 
@@ -18,8 +19,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-@Component
-public class Spielfeld extends JPanel {
+@Service
+public class Spielfeld extends JPanel implements SpielfeldService {
     private static Logger LOGGER = LogManager.getLogger(Spielfeld.class);
 
     private JPanel mySide;
@@ -165,7 +166,7 @@ public class Spielfeld extends JPanel {
         BufferedImage image = CardImageGenerator.generateImage(karte);
         JButton button = new JButton(new ImageIcon(image));
         mySide.add(button);
-        button.addActionListener(new CardListener(this, karte, spiel, spielService, button, regelnService));
+        button.addActionListener(new CardListener(this, karte));
         revalidate();
         repaint();
 
@@ -185,5 +186,31 @@ public class Spielfeld extends JPanel {
         } else {
             spiel.setAmZug(spiel.getAmZug() + 1);
         }
+    }
+
+    public void karteLegen(Karte karte) {
+
+        if (regelnService.checkCard(spiel, karte)) {
+            int aktuellerSpieler = spiel.getAmZug();
+            spielService.karteLegen(karte, spiel);
+            if (karte.getWert().equals("Bube")) {
+                String farbe = farbeWaehlen();
+                regelnService.handleBube(spiel, farbe);
+                gewaehlteFarbe(farbe);
+            } else {
+                gewaehlteFarbe("");
+            }
+            letzteKarteAendern(karte);
+            if (spiel.getSpieler().get(aktuellerSpieler).getHand().size() == 0) {
+                handAktualisieren();
+                showWinningMessage(spiel.getSpieler().get(aktuellerSpieler));
+            }
+            if (!karte.getWert().equals("Ass")) {
+                naechsterSpieler();
+            }
+        }
+
+        handAktualisieren();
+
     }
 }

@@ -4,10 +4,12 @@ import de.htwberlin.spielerService.Spieler;
 import de.htwberlin.spielerService.SpielerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class SpielerImpl implements SpielerService {
     private static Logger LOGGER = LogManager.getLogger(SpielerImpl.class);
 

@@ -1,15 +1,21 @@
-package de.htwberlin;
+package de.htwberlin.guiImpl;
 
 import de.htwberlin.kartenService.Karte;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import static java.util.Map.entry;
 
 public class CardImageGenerator {
+    private static Logger LOGGER = LogManager.getLogger(CardImageGenerator.class);
+
+    private static URL url = CardImageGenerator.class.getClassLoader().getResource("deck.jpg");
 
     private static final Map<List<String>, List<Integer>> cards = Map.ofEntries(
             entry(List.of("Karo","7"), List.of(0,0,60,89)),
@@ -55,10 +61,10 @@ public class CardImageGenerator {
         BufferedImage image = null;
 
         try {
-            image = ImageIO.read(new File("gui/src/main/resources/deck.jpg")).getSubimage(coordinates.get(0), coordinates.get(1), coordinates.get(2), coordinates.get(3));
+            image = ImageIO.read(new File(url.toURI())).getSubimage(coordinates.get(0), coordinates.get(1), coordinates.get(2), coordinates.get(3));
         }
         catch(Exception e) {
-
+            LOGGER.error("Kartenbilder konnten nicht geladen werden!");
         }
 
         return image;
@@ -70,10 +76,10 @@ public class CardImageGenerator {
         BufferedImage image = null;
 
         try {
-            image = ImageIO.read(new File("gui/src/main/resources/deck.jpg")).getSubimage(0,355,60,89);
+            image = ImageIO.read(new File(url.toURI())).getSubimage(0,355,60,89);
         }
         catch(Exception e) {
-
+            LOGGER.error("Kartenrückseite konnte nicht geladen werden!");
         }
 
         return image;
