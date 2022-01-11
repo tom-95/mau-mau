@@ -12,10 +12,10 @@ public class Gui extends JFrame {
 
     private static Logger LOGGER = LogManager.getLogger(Gui.class);
 
-    private Spielfeld spielfeld;
+    private SpielfeldImpl spielfeld;
 
     @Autowired
-    Gui(Spielfeld spielfeld) {
+    Gui(SpielfeldImpl spielfeld) {
         LOGGER.debug("Gui started!");
 
         setSize(1200, 800);

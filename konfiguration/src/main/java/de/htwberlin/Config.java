@@ -1,6 +1,6 @@
 package de.htwberlin;
 
-import de.htwberlin.guiImpl.Spielfeld;
+import de.htwberlin.guiImpl.SpielfeldImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
@@ -17,7 +17,7 @@ public class Config {
         LOGGER.debug("Main-Methode gestartet!");
 
         ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-        Spielfeld spielfeld = context.getBean(Spielfeld.class);
+        SpielfeldImpl spielfeld = context.getBean(SpielfeldImpl.class);
 
         spielfeld.spielStarten();
 

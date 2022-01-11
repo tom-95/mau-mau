@@ -6,10 +6,10 @@ import java.awt.event.ActionListener;
 
 public class CardListener implements ActionListener {
 
-        Spielfeld spielfeld;
+        SpielfeldImpl spielfeld;
         Karte karte;
 
-        public CardListener(Spielfeld spielfeld, Karte karte) {
+        public CardListener(SpielfeldImpl spielfeld, Karte karte) {
                 this.spielfeld = spielfeld;
                 this.karte = karte;
         }

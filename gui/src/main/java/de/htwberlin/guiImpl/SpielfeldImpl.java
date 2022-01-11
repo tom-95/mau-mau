@@ -20,8 +20,8 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 @Service
-public class Spielfeld extends JPanel implements SpielfeldService {
-    private static Logger LOGGER = LogManager.getLogger(Spielfeld.class);
+public class SpielfeldImpl extends JPanel implements SpielfeldService {
+    private static Logger LOGGER = LogManager.getLogger(SpielfeldImpl.class);
 
     private JPanel mySide;
     private JPanel otherSide;
@@ -35,7 +35,7 @@ public class Spielfeld extends JPanel implements SpielfeldService {
     private Spiel spiel;
 
     @Autowired
-    Spielfeld(SpielService spielService, RegelnService regelnService) {
+    SpielfeldImpl(SpielService spielService, RegelnService regelnService) {
         LOGGER.debug("Spielfeld erzeugt!");
 
         setLayout(new BorderLayout());
