@@ -2,8 +2,10 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/gui/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gui/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/karten/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/konfiguration/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/konfiguration/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/regeln/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spiel/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spieler/src/main/java" charset="UTF-8" />

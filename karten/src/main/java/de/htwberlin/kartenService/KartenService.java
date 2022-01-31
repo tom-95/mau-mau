@@ -18,4 +18,6 @@ public interface KartenService {
      */
     public void mischen(List<Karte> karten);
 
+    public void karteSpeichern(Karte karte);
+
 }

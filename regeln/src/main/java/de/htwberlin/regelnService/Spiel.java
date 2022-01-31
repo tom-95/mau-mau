@@ -3,24 +3,36 @@ package de.htwberlin.regelnService;
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.spielerService.Spieler;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Spiel {
+
+    /**
+     * ID des Spiels für die Datenbank.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     /**
      * Beinhaltet alle Spieler die am aktuellen Spiel teilnehmen
      */
+    @OneToMany
     public List<Spieler> spieler;
 
     /**
      * Beinhaltet alle noch nicht gezogenen oder ausgeteilten Karten.
      */
+    @OneToMany
     public List<Karte> kartendeck;
 
     /**
      * Beinhaltet alle Karten welche von den Spielern abelegt wurden.
      */
+    @OneToMany
     private List<Karte> ablagestapel = new ArrayList<>();
 
     /**

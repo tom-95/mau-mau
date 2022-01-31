@@ -2,10 +2,19 @@ package de.htwberlin.spielerService;
 
 import de.htwberlin.kartenService.Karte;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Spieler {
+
+    /**
+     * ID des Spielers für die Datenbank.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     /**
      * Speichert den Namen des Spielers.
@@ -20,7 +29,8 @@ public class Spieler {
     /**
      * Beinhaltet alle Karten welche sich in der Hand des Spielers befinden.
      */
-    private List<Karte> hand = new ArrayList<Karte>();
+    @OneToMany
+    private List<Karte> hand = new ArrayList<>();
 
     /**
      * Beinhaltet die Anzahl der gelegten Karten seit dem letzten Mau sagen.
@@ -34,6 +44,8 @@ public class Spieler {
     public Spieler(String name) {
         this.name = name;
     }
+
+    protected Spieler() {}
 
     public String getName() {
         return name;

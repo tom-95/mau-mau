@@ -4,6 +4,7 @@ import de.htwberlin.kartenService.Karte;
 import de.htwberlin.kartenService.KartenService;
 import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
+import de.htwberlin.regelnService.SpielRepository;
 import de.htwberlin.spielService.SpielService;
 import de.htwberlin.spielerService.Spieler;
 import de.htwberlin.spielerService.SpielerService;
@@ -23,11 +24,14 @@ public class SpielImpl implements SpielService {
     private SpielerService spielerService;
     private RegelnService regelnService;
 
+    private SpielRepository repository;
+
     @Autowired
-    public SpielImpl(KartenService kartenService, SpielerService spielerService, RegelnService regelnService) {
+    public SpielImpl(KartenService kartenService, SpielerService spielerService, RegelnService regelnService, SpielRepository repository) {
         this.kartenService = kartenService;
         this.spielerService = spielerService;
         this.regelnService = regelnService;
+        this.repository = repository;
 
     }
 
@@ -131,6 +135,12 @@ public class SpielImpl implements SpielService {
             return;
         }
         spiel.getSpieler().get(spiel.getAmZug()).setMauGesagt(true);
+    }
+
+    public void spielSpeichern(Spiel spiel) {
+
+        repository.save(spiel);
+
     }
 
     @Override

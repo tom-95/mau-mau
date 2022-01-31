@@ -2,10 +2,13 @@ package de.htwberlin.guiImpl;
 
 import de.htwberlin.guiService.SpielfeldService;
 import de.htwberlin.kartenService.Karte;
+import de.htwberlin.kartenService.KartenService;
 import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
+import de.htwberlin.spielerImpl.SpielerImpl;
 import de.htwberlin.spielerService.Spieler;
+import de.htwberlin.spielerService.SpielerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +35,12 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     private JLabel player = new JLabel();
     private SpielService spielService;
     private RegelnService regelnService;
+    private SpielerService spielerService;
+    private KartenService kartenService;
     private Spiel spiel;
 
     @Autowired
-    SpielfeldImpl(SpielService spielService, RegelnService regelnService) {
+    SpielfeldImpl(SpielService spielService, RegelnService regelnService, SpielerService spielerService, KartenService kartenService) {
         LOGGER.debug("Spielfeld erzeugt!");
 
         setLayout(new BorderLayout());
@@ -83,6 +88,8 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
         this.spielService = spielService;
         this.regelnService = regelnService;
+        this.spielerService = spielerService;
+        this.kartenService = kartenService;
 
         setVisible(true);
 
@@ -157,7 +164,17 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
         revalidate();
         repaint();
+        speichern();
         LOGGER.debug("Hand wurde aktualisiert.");
+
+    }
+
+    public void speichern() {
+
+        spielService.spielSpeichern(spiel);
+
+        //List<Spieler> spieler = spiel.getSpieler();
+        //spieler.forEach(aktuellerSpieler -> spielerService.spielerSpeichern(aktuellerSpieler));
 
     }
 

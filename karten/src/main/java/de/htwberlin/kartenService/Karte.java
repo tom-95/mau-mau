@@ -1,8 +1,19 @@
 package de.htwberlin.kartenService;
 
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
 public class Karte {
+
+    /**
+     * ID der Karte für die Datenbank.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     /**
      * Speichert die Farbe der Karte.
@@ -23,6 +34,8 @@ public class Karte {
         this.wert = wert;
         this.farbe = farbe;
     }
+
+    protected Karte() {}
 
     public String getWert() {
         return wert;

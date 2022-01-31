@@ -43,6 +43,8 @@ public interface SpielService {
      */
     public void mauSagen(Spiel spiel);
 
+    public void spielSpeichern(Spiel spiel);
+
     public void setKartenService(KartenService kartenService);
 
     public void setSpielerService(SpielerService spielerService);
