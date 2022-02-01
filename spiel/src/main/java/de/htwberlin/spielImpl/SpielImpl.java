@@ -46,6 +46,8 @@ public class SpielImpl implements SpielService {
 
         spiel.setSpieler(spieler);
         spiel.setKartendeck(kartenService.deckErzeugen());
+        for (Karte karte : spiel.getKartendeck())
+            kartenService.karteSpeichern(karte);
         kartenGeben(spiel);
 
         return spiel;

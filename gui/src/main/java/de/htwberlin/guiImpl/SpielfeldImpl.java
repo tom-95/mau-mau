@@ -171,10 +171,9 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
     public void speichern() {
 
+        List<Spieler> spieler = spiel.getSpieler();
+        spieler.forEach(aktuellerSpieler -> spielerService.spielerSpeichern(aktuellerSpieler));
         spielService.spielSpeichern(spiel);
-
-        //List<Spieler> spieler = spiel.getSpieler();
-        //spieler.forEach(aktuellerSpieler -> spielerService.spielerSpeichern(aktuellerSpieler));
 
     }
 

@@ -20,19 +20,19 @@ public class Spiel {
     /**
      * Beinhaltet alle Spieler die am aktuellen Spiel teilnehmen
      */
-    @OneToMany
+    @OneToMany(cascade = { CascadeType.MERGE })
     public List<Spieler> spieler;
 
     /**
      * Beinhaltet alle noch nicht gezogenen oder ausgeteilten Karten.
      */
-    @OneToMany
+    @OneToMany(cascade = { CascadeType.MERGE })
     public List<Karte> kartendeck;
 
     /**
      * Beinhaltet alle Karten welche von den Spielern abelegt wurden.
      */
-    @OneToMany
+    @OneToMany(cascade = { CascadeType.MERGE })
     private List<Karte> ablagestapel = new ArrayList<>();
 
     /**

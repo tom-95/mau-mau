@@ -29,7 +29,7 @@ public class Spieler {
     /**
      * Beinhaltet alle Karten welche sich in der Hand des Spielers befinden.
      */
-    @OneToMany
+    @OneToMany(cascade = { CascadeType.MERGE })
     private List<Karte> hand = new ArrayList<>();
 
     /**

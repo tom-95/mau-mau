@@ -6,6 +6,10 @@
              version="2.1">
 
     <persistence-unit name="TestDB">
+        <class>de.htwberlin.kartenService.Karte</class>
+        <class>de.htwberlin.regelnService.Spiel</class>
+        <class>de.htwberlin.spielerService.Spieler</class>
+
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://sqlservervier.f4.htw-berlin.de" />
             <property name="javax.persistence.jdbc.user" value="u575421" />
