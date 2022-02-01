@@ -40,8 +40,8 @@ public class SpielImplTest {
 
     @Test
     public void testSpielStarten() {
-        Spieler spieler1 = new Spieler("Spieler1");
-        Spieler spieler2 = new Spieler("Spieler2");
+        Spieler spieler1 = new Spieler("Spieler1", false);
+        Spieler spieler2 = new Spieler("Spieler2", false);
         List<Spieler> spieler = new ArrayList<>();
         spieler.add(spieler1);
         spieler.add(spieler2);
@@ -49,13 +49,13 @@ public class SpielImplTest {
         for(int i=0; i<32; i++)
             deck.add(new Karte("", ""));
 
-        when(spielerMock.spielerErzeugen(2)).thenReturn(spieler);
+        when(spielerMock.spielerErzeugen(2, 0)).thenReturn(spieler);
         when(kartenMock.deckErzeugen()).thenReturn(deck);
 
         spielService.setSpielerService(spielerMock);
         spielService.setKartenService(kartenMock);
 
-        Assert.assertNotNull(spielService.spielStarten(2));
+        Assert.assertNotNull(spielService.spielStarten(2, 0));
     }
 
     @Test
@@ -65,8 +65,8 @@ public class SpielImplTest {
             deck.add(new Karte("", ""));
         spiel.setKartendeck(deck);
         List<Spieler> spieler = new ArrayList<>();
-        spieler.add(new Spieler("spieler1"));
-        spieler.add(new Spieler("spieler2"));
+        spieler.add(new Spieler("spieler1", false));
+        spieler.add(new Spieler("spieler2", false));
         spiel.setSpieler(spieler);
         spielService.kartenGeben(spiel);
 
@@ -80,7 +80,7 @@ public class SpielImplTest {
         deck.add(new Karte("Sieben", "Herz"));
         deck.add(new Karte("Zehn", "Schaufel"));
         spiel.setKartendeck(deck);
-        spieler = new Spieler("testSpieler");
+        spieler = new Spieler("testSpieler", false);
         List<Karte> hand = spieler.getHand();
         Integer size = hand.size();
         spiel.setSpieler(List.of(spieler));
@@ -100,8 +100,8 @@ public class SpielImplTest {
         hand.add(karte1);
         hand.add(karte2);
 
-        spieler.add(new Spieler("spieler1"));
-        spieler.add(new Spieler("spieler2"));
+        spieler.add(new Spieler("spieler1", false));
+        spieler.add(new Spieler("spieler2", false));
         spiel.setSpieler(spieler);
         spiel.getSpieler().get(0).setHand(hand);
 
@@ -119,8 +119,8 @@ public class SpielImplTest {
     public void testMauSagen() {
 
         List<Spieler> spieler = new ArrayList<>();
-        spieler.add(new Spieler("spieler1"));
-        spieler.add(new Spieler("spieler2"));
+        spieler.add(new Spieler("spieler1", false));
+        spieler.add(new Spieler("spieler2", false));
         spiel.setSpieler(spieler);
         List<Karte> hand = new ArrayList<>();
         Karte karte1 = new Karte("Sieben", "Herz");

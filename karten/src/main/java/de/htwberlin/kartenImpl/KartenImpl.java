@@ -1,10 +1,7 @@
 package de.htwberlin.kartenImpl;
 
 import de.htwberlin.kartenService.Karte;
-import de.htwberlin.kartenService.KartenRepository;
 import de.htwberlin.kartenService.KartenService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,15 +10,6 @@ import java.util.List;
 
 @Service
 public class KartenImpl implements KartenService {
-
-    private KartenRepository repository;
-
-    @Autowired
-    public KartenImpl(KartenRepository repository) {
-        this.repository = repository;
-    }
-
-    public KartenImpl() {}
 
     public List<Karte> deckErzeugen() {
 
@@ -68,12 +56,6 @@ public class KartenImpl implements KartenService {
     public void mischen(List<Karte> karten) {
 
         Collections.shuffle(karten);
-
-    }
-
-    public void karteSpeichern(Karte karte) {
-
-        repository.save(karte);
 
     }
 

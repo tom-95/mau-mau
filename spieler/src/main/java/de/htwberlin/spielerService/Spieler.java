@@ -22,6 +22,11 @@ public class Spieler {
     private String name;
 
     /**
+     * Zeigt an, ob der Spieler ein virtueller Spieler ist.
+     */
+    private boolean ki;
+
+    /**
      * Speichert, ob der Spieler vor dem legen der nächsten Karte Mau gesagt hat.
      */
     private boolean mauGesagt = false;
@@ -29,7 +34,7 @@ public class Spieler {
     /**
      * Beinhaltet alle Karten welche sich in der Hand des Spielers befinden.
      */
-    @OneToMany(cascade = { CascadeType.MERGE })
+    @ElementCollection
     private List<Karte> hand = new ArrayList<>();
 
     /**
@@ -41,11 +46,16 @@ public class Spieler {
      * Konstruktor der Klasse Spieler.
      * @param name Name des Spielers
      */
-    public Spieler(String name) {
+    public Spieler(String name, boolean ki) {
         this.name = name;
+        this.ki = ki;
     }
 
     protected Spieler() {}
+
+    public Long getId() { return id; }
+
+    public void setId(Long id) { this.id = id; }
 
     public String getName() {
         return name;
@@ -79,4 +89,8 @@ public class Spieler {
     public void setZugZaehler(Integer zugZaehler) {
         this.zugZaehler = zugZaehler;
     }
+
+    public boolean isKi() { return ki; }
+
+    public void setKi(boolean ki) { this.ki = ki; }
 }

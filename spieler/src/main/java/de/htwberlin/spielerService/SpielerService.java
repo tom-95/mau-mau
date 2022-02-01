@@ -11,7 +11,7 @@ public interface SpielerService {
      *
      * @return Eine Liste der neu angelegten Spieler.
      */
-    public List<Spieler> spielerErzeugen(Integer anzahlSpieler);
+    public List<Spieler> spielerErzeugen(int anzahlSpieler, int anzahlVirtuellerSpieler);
 
     public void spielerSpeichern(Spieler spieler);
 

@@ -26,13 +26,13 @@ public class Spiel {
     /**
      * Beinhaltet alle noch nicht gezogenen oder ausgeteilten Karten.
      */
-    @OneToMany(cascade = { CascadeType.MERGE })
+    @ElementCollection
     public List<Karte> kartendeck;
 
     /**
      * Beinhaltet alle Karten welche von den Spielern abelegt wurden.
      */
-    @OneToMany(cascade = { CascadeType.MERGE })
+    @ElementCollection
     private List<Karte> ablagestapel = new ArrayList<>();
 
     /**
@@ -50,6 +50,9 @@ public class Spiel {
      */
     private String wunschfarbe = null;
 
+    public Long getId() { return id; }
+
+    public void setId(Long id) { this.id = id; }
 
     public List<Spieler> getSpieler() {
         return spieler;

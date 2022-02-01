@@ -30,8 +30,8 @@ public class RegelnImplTest {
     public void testCheckCard() {
         List<Spieler> spieler = new ArrayList<>();
 
-        spieler.add(new Spieler("spieler1"));
-        spieler.add(new Spieler("spieler2"));
+        spieler.add(new Spieler("spieler1", false));
+        spieler.add(new Spieler("spieler2", false));
         spiel.setSpieler(spieler);
 
         List<Karte> ablagestapel = new ArrayList<>();
@@ -45,9 +45,9 @@ public class RegelnImplTest {
     public void testHandleAss() {
         List<Spieler> spieler = new ArrayList<>();
 
-        spieler.add(new Spieler("spieler1"));
-        spieler.add(new Spieler("spieler2"));
-        spieler.add(new Spieler("spieler3"));
+        spieler.add(new Spieler("spieler1", false));
+        spieler.add(new Spieler("spieler2", false));
+        spieler.add(new Spieler("spieler3", false));
         spiel.setSpieler(spieler);
 
         regeln.handleAss(spiel);

@@ -1,19 +1,9 @@
 package de.htwberlin.kartenService;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity
+@Embeddable
 public class Karte {
-
-    /**
-     * ID der Karte für die Datenbank.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     /**
      * Speichert die Farbe der Karte.

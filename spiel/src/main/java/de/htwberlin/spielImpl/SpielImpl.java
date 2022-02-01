@@ -37,17 +37,15 @@ public class SpielImpl implements SpielService {
 
     public SpielImpl() {}
 
-    public Spiel spielStarten(int anzahlSpieler) {
+    public Spiel spielStarten(int anzahlSpieler, int anzahlVirtuelleSpieler) {
         LOGGER.debug("Spiel wird gestartet.");
 
         Spiel spiel = new Spiel();
 
-        List<Spieler> spieler = spielerService.spielerErzeugen(anzahlSpieler);
+        List<Spieler> spieler = spielerService.spielerErzeugen(anzahlSpieler, anzahlVirtuelleSpieler);
 
         spiel.setSpieler(spieler);
         spiel.setKartendeck(kartenService.deckErzeugen());
-        for (Karte karte : spiel.getKartendeck())
-            kartenService.karteSpeichern(karte);
         kartenGeben(spiel);
 
         return spiel;

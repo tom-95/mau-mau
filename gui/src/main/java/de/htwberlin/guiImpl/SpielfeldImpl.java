@@ -6,7 +6,7 @@ import de.htwberlin.kartenService.KartenService;
 import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
-import de.htwberlin.spielerImpl.SpielerImpl;
+import de.htwberlin.spielService.VirtuellerSpielerService;
 import de.htwberlin.spielerService.Spieler;
 import de.htwberlin.spielerService.SpielerService;
 import org.apache.logging.log4j.LogManager;
@@ -37,10 +37,11 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     private RegelnService regelnService;
     private SpielerService spielerService;
     private KartenService kartenService;
+    private VirtuellerSpielerService virtuellerSpielerService;
     private Spiel spiel;
 
     @Autowired
-    SpielfeldImpl(SpielService spielService, RegelnService regelnService, SpielerService spielerService, KartenService kartenService) {
+    SpielfeldImpl(SpielService spielService, RegelnService regelnService, SpielerService spielerService, VirtuellerSpielerService virtuellerSpielerService, KartenService kartenService) {
         LOGGER.debug("Spielfeld erzeugt!");
 
         setLayout(new BorderLayout());
@@ -89,6 +90,7 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
         this.spielService = spielService;
         this.regelnService = regelnService;
         this.spielerService = spielerService;
+        this.virtuellerSpielerService = virtuellerSpielerService;
         this.kartenService = kartenService;
 
         setVisible(true);
@@ -98,7 +100,7 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     public void spielStarten() {
         LOGGER.debug("Spiel gestartet!");
 
-        Integer[] options = {2, 3, 4};
+        Integer[] options = {1, 2, 3, 4};
 
         int x = JOptionPane.showOptionDialog(null, "Wie viele Spieler seid ihr?", "Anzahl Spieler", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
@@ -106,7 +108,20 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
             System.exit(0);
         }
 
-        spiel = spielService.spielStarten(x+2);
+        int y = -1;
+
+        if (x == 0) {
+
+            Integer[] options2 = {1, 2, 3};
+
+            y = JOptionPane.showOptionDialog(null, "Wie viele KI-Gegner möchtest du?", "Anzahl KI-Gegner", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options2, options2[0]);
+
+            if (y == JOptionPane.CLOSED_OPTION) {
+                System.exit(0);
+            }
+        }
+
+        spiel = spielService.spielStarten(x+1, y+1);
 
         spielfeldAnzeigen();
 
@@ -153,6 +168,8 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
     public void handAktualisieren() {
         LOGGER.debug("Hand wird aktualisiert.");
+        if (spiel.getSpieler().get(spiel.getAmZug()).isKi())
+            return;
         mySide.removeAll();
 
         String spielerName = spiel.getSpieler().get(spiel.getAmZug()).getName();
@@ -202,6 +219,10 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
         } else {
             spiel.setAmZug(spiel.getAmZug() + 1);
         }
+
+        if (spiel.getSpieler().get(spiel.getAmZug()).isKi())
+            virtuellerSpielerService.zugDurchfuehren(spiel, spiel.getSpieler().get(spiel.getAmZug()));
+
     }
 
     public void karteLegen(Karte karte) {

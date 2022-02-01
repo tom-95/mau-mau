@@ -24,12 +24,16 @@ public class SpielerImpl implements SpielerService {
 
     public SpielerImpl() {}
 
-    public List<Spieler> spielerErzeugen(Integer anzahlSpieler) {
+    public List<Spieler> spielerErzeugen(int anzahlSpieler, int anzahlVirtuellerSpieler) {
         LOGGER.debug("Spieler werden erzeugt.");
 
         List<Spieler> spielerListe = new ArrayList<>();
         for(int i=0; i<anzahlSpieler; i++) {
-            Spieler spieler = new Spieler("Spieler " + (i+1));
+            Spieler spieler = new Spieler("Spieler " + (i+1), false);
+            spielerListe.add(spieler);
+        }
+        for(int i=0; i<anzahlVirtuellerSpieler; i++) {
+            Spieler spieler = new Spieler("KI-Spieler " + (i+1), true);
             spielerListe.add(spieler);
         }
         return spielerListe;

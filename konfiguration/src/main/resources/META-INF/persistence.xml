@@ -6,7 +6,6 @@
              version="2.1">
 
     <persistence-unit name="TestDB">
-        <class>de.htwberlin.kartenService.Karte</class>
         <class>de.htwberlin.regelnService.Spiel</class>
         <class>de.htwberlin.spielerService.Spieler</class>
 

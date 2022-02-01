@@ -19,7 +19,7 @@ public class SpielerImplTest {
     @Test
     public void testSpielerErzeugen() {
 
-        Assert.assertNotNull(spielerService.spielerErzeugen(2));
+        Assert.assertNotNull(spielerService.spielerErzeugen(2, 0));
 
     }
 
