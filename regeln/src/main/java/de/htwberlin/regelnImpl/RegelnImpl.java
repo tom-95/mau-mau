@@ -18,11 +18,11 @@ public class RegelnImpl implements RegelnService {
 
         if (spiel.getSpieler().get(spiel.getAmZug()).getHand().size() == 1) {
             if (!spiel.getSpieler().get(spiel.getAmZug()).isMauGesagt()) {
-                LOGGER.debug("Karte ungültig");
+                LOGGER.debug("Karte ungültig weil kein MAU gesagt");
                 return false;
             }
             if (spiel.getSpieler().get(spiel.getAmZug()).getZugZaehler() != 1) {
-                LOGGER.debug("Karte ungültig");
+                LOGGER.debug("Karte ungültig weil kein MAU gesagt");
                 return false;
             }
         }
@@ -31,21 +31,20 @@ public class RegelnImpl implements RegelnService {
         Karte letzteKarte = ablagestapel.get(ablagestapel.size()-1);
 
         if (spiel.getZiehZaehler() > 0 && !karte.getWert().equals("7")) {
-            LOGGER.debug("Karte ungültig");
+            LOGGER.debug("Karte ungültig weil nur 7 gültig");
             return false;
         }
         if ((karte.getWert().equals("Bube") && letzteKarte.getWert().equals("Bube"))) {
-            LOGGER.debug("Karte ungültig");
+            LOGGER.debug("Karte ungültig weil Bube auf Bube");
             return false;
         }
 
         if (spiel.getWunschfarbe() != null) {
             if (spiel.getWunschfarbe().equals(karte.getFarbe())) {
-                spiel.setWunschfarbe(null);
                 LOGGER.debug("Karte gültig");
                 return true;
             } else {
-                LOGGER.debug("Karte ungültig");
+                LOGGER.debug("Karte ungültig weil Wunschfarbe nicht erfüllt");
                 return false;
             }
         }
@@ -57,7 +56,7 @@ public class RegelnImpl implements RegelnService {
             return true;
         }
         else {
-            LOGGER.debug("Karte ungültig");
+            LOGGER.debug("Karte ungültig weil kein Bube und Farbe oder Wert nicht gleich");
             return false;
         }
     }

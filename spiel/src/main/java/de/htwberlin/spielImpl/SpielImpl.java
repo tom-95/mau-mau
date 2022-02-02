@@ -116,14 +116,15 @@ public class SpielImpl implements SpielService {
         List<Karte> ablagestapel = new ArrayList<>(spiel.getAblagestapel());
         ablagestapel.add(karte);
         spiel.setAblagestapel(ablagestapel);
-        if(karte.getWert().equals("Ass"))
-            regelnService.handleAss(spiel);
+//        if(karte.getWert().equals("Ass"))
+//            regelnService.handleAss(spiel);
         if(karte.getWert().equals("7"))
             regelnService.handleSieben(spiel);
         List<Karte> hand = spiel.getSpieler().get(aktuellerSpieler).getHand();
         hand.remove(karte);
         spiel.getSpieler().get(aktuellerSpieler).setHand(hand);
         spiel.getSpieler().get(aktuellerSpieler).setZugZaehler(spiel.getSpieler().get(aktuellerSpieler).getZugZaehler() + 1);
+        spiel.setWunschfarbe(null);
 
         }
 

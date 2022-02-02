@@ -217,6 +217,12 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
         spielfeldAnzeigen();
 
+        kiZugDurchfuehren();
+
+    }
+
+    public void kiZugDurchfuehren() {
+
         if (spiel.getSpieler().get(spiel.getAmZug()).isKi()) {
             Karte karte = virtuellerSpielerService.karteWaehlen(spiel, spiel.getSpieler().get(spiel.getAmZug()));
             if (karte != null) {
@@ -245,7 +251,11 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
                     farbe = virtuellerSpielerService.farbeWaehlen(spiel, spiel.getSpieler().get(spiel.getAmZug()));
                 regelnService.handleBube(spiel, farbe);
                 gewaehlteFarbe(farbe);
-            } else {
+            } else if(karte.getWert().equals("Ass")) {
+                regelnService.handleAss(spiel);
+                kiZugDurchfuehren();
+            }
+            else {
                 gewaehlteFarbe("");
             }
             letzteKarteAendern(karte);
@@ -264,7 +274,6 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
     public void ziehen() {
 
-        spielService.ziehen(spiel);
         if (spiel.getZiehZaehler() == 0) {
             spielService.ziehen(spiel);
         } else {
@@ -272,9 +281,9 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
                 spielService.ziehen(spiel);
             }
         }
+        spiel.setZiehZaehler(0);
         naechsterSpieler();
         handAktualisieren();
-        spiel.setZiehZaehler(0);
 
     }
 }
