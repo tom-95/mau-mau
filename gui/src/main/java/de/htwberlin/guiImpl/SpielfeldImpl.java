@@ -232,7 +232,6 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
             }
             else {
                 ziehen();
-                naechsterSpieler();
             }
         }
 
