@@ -80,14 +80,13 @@ public class SpielImpl implements SpielService {
 
     @Override
     public void ziehen(Spiel spiel) {
-        LOGGER.debug("Karte wird gezogen");
 
         List<Karte> deck = spiel.getKartendeck();
 
         if (deck.size() == 0) {
             List<Karte> ablagestapel = spiel.getAblagestapel();
-            Karte letzteKarte = ablagestapel.get(ablagestapel.size()-1);
-            ablagestapel.remove(ablagestapel.size()-1);
+            Karte letzteKarte = ablagestapel.get(ablagestapel.size() - 1);
+            ablagestapel.remove(ablagestapel.size() - 1);
             kartenService.mischen(ablagestapel);
             spiel.setKartendeck(ablagestapel);
             spiel.setAblagestapel(List.of(letzteKarte));
@@ -101,6 +100,8 @@ public class SpielImpl implements SpielService {
         hand.add(karte);
         spiel.getSpieler().get(spiel.getAmZug()).setHand(hand);
         spiel.getSpieler().get(spiel.getAmZug()).setZugZaehler(spiel.getSpieler().get(spiel.getAmZug()).getZugZaehler() + 1);
+
+        LOGGER.debug("1 Karte wurde gezogen");
 
         LOGGER.info("Es befinden sich noch " + deck.size() + " Karten im Deck.");
 

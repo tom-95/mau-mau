@@ -6,7 +6,7 @@ import de.htwberlin.kartenService.KartenService;
 import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
-import de.htwberlin.spielService.VirtuellerSpielerService;
+import de.htwberlin.regelnService.VirtuellerSpielerService;
 import de.htwberlin.spielerService.Spieler;
 import de.htwberlin.spielerService.SpielerService;
 import org.apache.logging.log4j.LogManager;
@@ -60,16 +60,8 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (spiel.getZiehZaehler() == 0) {
-                    spielService.ziehen(spiel);
-                } else {
-                    for (int i = 0; i < spiel.getZiehZaehler(); i++){
-                        spielService.ziehen(spiel);
-                    }
-                }
-                naechsterSpieler();
-                handAktualisieren();
-                spiel.setZiehZaehler(0);
+                ziehen();
+
             }
         });
 
@@ -181,7 +173,7 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
         revalidate();
         repaint();
-        speichern();
+        //speichern();
         LOGGER.debug("Hand wurde aktualisiert.");
 
     }
@@ -213,6 +205,7 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
     public void naechsterSpieler() {
         LOGGER.debug("Nächster Spieler wird gewählt.");
+        LOGGER.debug("Alter Spieler: " + spiel.getSpieler().get(spiel.getAmZug()).getName());
 
         if (spiel.getAmZug() == (spiel.getSpieler().size() - 1)) {
             spiel.setAmZug(0);
@@ -220,8 +213,22 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
             spiel.setAmZug(spiel.getAmZug() + 1);
         }
 
-        if (spiel.getSpieler().get(spiel.getAmZug()).isKi())
-            virtuellerSpielerService.zugDurchfuehren(spiel, spiel.getSpieler().get(spiel.getAmZug()));
+        LOGGER.debug("Neuer Spieler: " + spiel.getSpieler().get(spiel.getAmZug()).getName());
+
+        spielfeldAnzeigen();
+
+        if (spiel.getSpieler().get(spiel.getAmZug()).isKi()) {
+            Karte karte = virtuellerSpielerService.karteWaehlen(spiel, spiel.getSpieler().get(spiel.getAmZug()));
+            if (karte != null) {
+                if (spiel.getSpieler().get(spiel.getAmZug()).getHand().size()==2)
+                    spielService.mauSagen(spiel);
+                karteLegen(karte);
+            }
+            else {
+                ziehen();
+                naechsterSpieler();
+            }
+        }
 
     }
 
@@ -231,7 +238,11 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
             int aktuellerSpieler = spiel.getAmZug();
             spielService.karteLegen(karte, spiel);
             if (karte.getWert().equals("Bube")) {
-                String farbe = farbeWaehlen();
+                String farbe;
+                if (!spiel.getSpieler().get(spiel.getAmZug()).isKi())
+                    farbe = farbeWaehlen();
+                else
+                    farbe = virtuellerSpielerService.farbeWaehlen(spiel, spiel.getSpieler().get(spiel.getAmZug()));
                 regelnService.handleBube(spiel, farbe);
                 gewaehlteFarbe(farbe);
             } else {
@@ -247,7 +258,23 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
             }
         }
 
+        spielfeldAnzeigen();
+
+    }
+
+    public void ziehen() {
+
+        spielService.ziehen(spiel);
+        if (spiel.getZiehZaehler() == 0) {
+            spielService.ziehen(spiel);
+        } else {
+            for (int i = 0; i < spiel.getZiehZaehler(); i++){
+                spielService.ziehen(spiel);
+            }
+        }
+        naechsterSpieler();
         handAktualisieren();
+        spiel.setZiehZaehler(0);
 
     }
 }

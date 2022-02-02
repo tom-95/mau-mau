@@ -14,13 +14,15 @@ public class RegelnImpl implements RegelnService {
     private static Logger LOGGER = LogManager.getLogger(RegelnImpl.class);
 
     public boolean checkCard(Spiel spiel, Karte karte) {
-        LOGGER.debug("Karte wird gecheckt.");
+        LOGGER.debug("Karte wird gecheckt. Karte = " + karte.getFarbe() + " " + karte.getWert());
 
         if (spiel.getSpieler().get(spiel.getAmZug()).getHand().size() == 1) {
             if (!spiel.getSpieler().get(spiel.getAmZug()).isMauGesagt()) {
+                LOGGER.debug("Karte ungültig");
                 return false;
             }
             if (spiel.getSpieler().get(spiel.getAmZug()).getZugZaehler() != 1) {
+                LOGGER.debug("Karte ungültig");
                 return false;
             }
         }
@@ -29,34 +31,42 @@ public class RegelnImpl implements RegelnService {
         Karte letzteKarte = ablagestapel.get(ablagestapel.size()-1);
 
         if (spiel.getZiehZaehler() > 0 && !karte.getWert().equals("7")) {
+            LOGGER.debug("Karte ungültig");
             return false;
         }
         if ((karte.getWert().equals("Bube") && letzteKarte.getWert().equals("Bube"))) {
+            LOGGER.debug("Karte ungültig");
             return false;
         }
 
         if (spiel.getWunschfarbe() != null) {
             if (spiel.getWunschfarbe().equals(karte.getFarbe())) {
                 spiel.setWunschfarbe(null);
+                LOGGER.debug("Karte gültig");
                 return true;
             } else {
+                LOGGER.debug("Karte ungültig");
                 return false;
             }
         }
 
         if ((karte.getWert().equals("Bube") && !letzteKarte.getWert().equals("Bube")) ||
                 (karte.getFarbe().equals(letzteKarte.getFarbe())) ||
-                (karte.getWert().equals(letzteKarte.getWert())))
+                (karte.getWert().equals(letzteKarte.getWert()))) {
+            LOGGER.debug("Karte gültig");
             return true;
-        else
+        }
+        else {
+            LOGGER.debug("Karte ungültig");
             return false;
+        }
     }
 
     public void handleAss(Spiel spiel) {
         LOGGER.debug("Ass handling gestartet.");
 
         int aktuellerSpieler = spiel.getAmZug();
-        LOGGER.info("Aktueller Spieler: " + spiel.getSpieler().get(aktuellerSpieler));
+        LOGGER.info("Aktueller Spieler: " + spiel.getSpieler().get(aktuellerSpieler).getName());
 
         if(aktuellerSpieler + 2 < spiel.getSpieler().size())
             aktuellerSpieler += 2;
@@ -67,7 +77,7 @@ public class RegelnImpl implements RegelnService {
 
         spiel.setAmZug(aktuellerSpieler);
 
-        LOGGER.info("Neuer Spieler: " + spiel.getSpieler().get(aktuellerSpieler));
+        LOGGER.info("Neuer Spieler: " + spiel.getSpieler().get(aktuellerSpieler).getName());
         LOGGER.debug("Ass handling beendet.");
 
     }
