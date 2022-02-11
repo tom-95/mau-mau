@@ -13,6 +13,8 @@ public interface SpielService {
     /**
      * Es wird ein neues Spiel gestartet und die Karten ausgeteilt.
      *
+     * @param anzahlSpieler - Die Anzahl Spieler.
+     * @param anzahlVirtuellerSpieler - Die Anzahl KI-Spieler.
      */
     public Spiel spielStarten(int anzahlSpieler, int anzahlVirtuellerSpieler);
 
@@ -45,18 +47,39 @@ public interface SpielService {
      */
     public void mauSagen(Spiel spiel);
 
+    /**
+     * Ein nicht beendetes Spiel wird neu geladen.
+     *
+     * @param id - Die ID des Spiels.
+     *
+     * @return Geladenes Spiel.
+     */
     public Spiel spielLaden(long id);
 
+    /**
+     * Es werden alle nicht beendeten Spiele in der Datenbank zurückgegeben.
+     *
+     * @return Liste aller Spieler in der Datenbank.
+     */
     public List<Spiel> alleSpieleFinden();
 
+    /**
+     * Das Übergebene Spiel wird in der Datenbank gespeichert.
+     *
+     * @param spiel - Das aktuelle Spiel.
+     */
     public void spielSpeichern(Spiel spiel);
 
+    /**
+     * Das Spiel wird aus der Datenbank gelöscht.
+     *
+     * @param spiel - Das aktuelle Spiel.
+     */
     public void spielLoeschen(Spiel spiel);
 
-    public void setKartenService(KartenService kartenService);
+    void setSpielerService(SpielerService spielerService);
 
-    public void setSpielerService(SpielerService spielerService);
+    void setKartenService(KartenService kartenService);
 
-    public void setRegelnService(RegelnService regelnService);
-
+    void setRegelnService(RegelnService regelnService);
 }

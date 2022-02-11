@@ -13,6 +13,11 @@ public interface SpielerService {
      */
     public List<Spieler> spielerErzeugen(int anzahlSpieler, int anzahlVirtuellerSpieler);
 
+    /**
+     * Der Übergebene Spieler wird in der Datenbank gespeichert.
+     *
+     * @param spieler - Der zu speichernde Spieler.
+     */
     public void spielerSpeichern(Spieler spieler);
 
 }

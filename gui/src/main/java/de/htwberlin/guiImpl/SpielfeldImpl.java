@@ -43,8 +43,8 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     private SpielerService spielerService;
     private KartenService kartenService;
     private VirtuellerSpielerService virtuellerSpielerService;
-    private Spiel spiel;
-    private String eigenerSpieler;
+    protected Spiel spiel;
+    protected String eigenerSpieler;
     private SpielRepository repository;
     private SpielerRepository spielerRepository;
 
@@ -258,15 +258,6 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
         return options[x];
 
     }
-
-//    public void gewaehlteFarbe(String farbe) {
-//
-//        if (farbe.equals("")) {
-//            colourChoose.setText("");
-//        } else {
-//            colourChoose.setText(spiel.getSpieler().get(spiel.getAmZug()).getName() + " wählt " + farbe);
-//        }
-//    }
 
     public void letzteKarteAendern(Karte karte) {
 

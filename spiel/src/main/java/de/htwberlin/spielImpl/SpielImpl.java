@@ -190,19 +190,16 @@ public class SpielImpl implements SpielService {
 
     }
 
-    @Override
     public void setKartenService(KartenService kartenService) {
 
         this.kartenService = kartenService;
     }
 
-    @Override
     public void setSpielerService(SpielerService spielerService) {
 
         this.spielerService = spielerService;
     }
 
-    @Override
     public void setRegelnService(RegelnService regelnService) {
 
         this.regelnService = regelnService;

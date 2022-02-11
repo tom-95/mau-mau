@@ -211,6 +211,12 @@ public class RegelnImplTest {
     @Test
     public void testHandleBube() {
 
+        List<Spieler> spieler = new ArrayList<>();
+
+        spieler.add(new Spieler("spieler1", false));
+        spieler.add(new Spieler("spieler2", false));
+        spiel.setSpieler(spieler);
+
         regeln.handleBube(spiel, "Pik");
 
         Assert.assertNotNull(spiel.getWunschfarbe());
