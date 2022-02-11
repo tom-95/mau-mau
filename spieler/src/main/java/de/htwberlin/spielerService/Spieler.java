@@ -27,6 +27,11 @@ public class Spieler {
     private boolean ki;
 
     /**
+     * Zeigt an, ob der Spieler bereits in einem laufenden Online-Spiel verwendet wird.
+     */
+    private boolean spielerInUse = false;
+
+    /**
      * Speichert, ob der Spieler vor dem legen der nächsten Karte Mau gesagt hat.
      */
     private boolean mauGesagt = false;
@@ -93,4 +98,8 @@ public class Spieler {
     public boolean isKi() { return ki; }
 
     public void setKi(boolean ki) { this.ki = ki; }
+
+    public boolean isSpielerInUse() { return spielerInUse; }
+
+    public void setSpielerInUse(boolean spielerInUse) { this.spielerInUse = spielerInUse; }
 }

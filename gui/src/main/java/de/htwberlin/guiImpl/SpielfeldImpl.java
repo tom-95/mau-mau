@@ -10,6 +10,7 @@ import de.htwberlin.regelnService.SpielRepository;
 import de.htwberlin.spielService.SpielService;
 import de.htwberlin.regelnService.VirtuellerSpielerService;
 import de.htwberlin.spielerService.Spieler;
+import de.htwberlin.spielerService.SpielerRepository;
 import de.htwberlin.spielerService.SpielerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,6 +23,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,6 +46,7 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     private Spiel spiel;
     private String eigenerSpieler;
     private SpielRepository repository;
+    private SpielerRepository spielerRepository;
 
     @Autowired
     SpielfeldImpl(SpielService spielService, RegelnService regelnService, SpielerService spielerService, VirtuellerSpielerService virtuellerSpielerService, KartenService kartenService, SpielRepository repository) {
@@ -175,12 +178,27 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
         this.spiel = spiel2;
 
         if (spiel.isOnline()) {
-            String[] namenArray = new String[spiel.getSpieler().size()];
-            for (int i = 0; i < spiel.getSpieler().size(); i++) {
-                namenArray[i] = spiel.getSpieler().get(i).getName();
+            List<Spieler> freieSpieler = new ArrayList<>();
+            for (Spieler spieler : spiel.getSpieler()) {
+                if (!spieler.isSpielerInUse()) {
+                    freieSpieler.add(spieler);
+                }
+            }
+            String[] namenArray = new String[freieSpieler.size()];
+            for (int i = 0; i < freieSpieler.size(); i++) {
+
+                namenArray[i] = freieSpieler.get(i).getName();
             }
 
             eigenerSpieler = (String) JOptionPane.showInputDialog(null, "Welcher Spieler bist du?", "Spieler wählen", JOptionPane.QUESTION_MESSAGE, null, namenArray, namenArray[0]);
+
+            for (Spieler spieler : spiel.getSpieler()) {
+                if (spieler.getName().equals(eigenerSpieler)) {
+                    spieler.setSpielerInUse(true);
+                }
+            }
+
+            speichern();
 
             spielAktualisieren = new JButton(new String("Spiel aktualisieren"));
             spielAktualisieren.addActionListener(new ActionListener() {
