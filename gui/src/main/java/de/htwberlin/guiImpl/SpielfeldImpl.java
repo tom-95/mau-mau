@@ -6,6 +6,7 @@ import de.htwberlin.kartenService.Karte;
 import de.htwberlin.kartenService.KartenService;
 import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
+import de.htwberlin.regelnService.SpielRepository;
 import de.htwberlin.spielService.SpielService;
 import de.htwberlin.regelnService.VirtuellerSpielerService;
 import de.htwberlin.spielerService.Spieler;
@@ -42,9 +43,10 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     private VirtuellerSpielerService virtuellerSpielerService;
     private Spiel spiel;
     private String eigenerSpieler;
+    private SpielRepository repository;
 
     @Autowired
-    SpielfeldImpl(SpielService spielService, RegelnService regelnService, SpielerService spielerService, VirtuellerSpielerService virtuellerSpielerService, KartenService kartenService) {
+    SpielfeldImpl(SpielService spielService, RegelnService regelnService, SpielerService spielerService, VirtuellerSpielerService virtuellerSpielerService, KartenService kartenService, SpielRepository repository) {
         LOGGER.debug("Spielfeld erzeugt!");
 
         setLayout(new BorderLayout());
@@ -94,6 +96,7 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
         this.spielerService = spielerService;
         this.virtuellerSpielerService = virtuellerSpielerService;
         this.kartenService = kartenService;
+        this.repository = repository;
 
         setVisible(true);
 
@@ -183,6 +186,15 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
             spielAktualisieren.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    try {
+                        if (!repository.existsById(spiel.getId())) {
+                            JOptionPane.showMessageDialog(null, "Dein Gegner hat gewonnen! Das Spiel wird beendet.");
+                            System.exit(0);
+                        }
+                    } catch (RuntimeException exc) {
+                        JOptionPane.showMessageDialog(null, "Datenbank nicht erreichbar!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        System.exit(0);
+                    }
                     try {
                         spiel = spielService.spielLaden(spiel.getId());
                     } catch (DatenbankNichtErreichbarException ex) {
