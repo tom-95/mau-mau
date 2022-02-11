@@ -43,5 +43,11 @@
           <version>0.0.1-SNAPSHOT</version>
           <scope>compile</scope>
       </dependency>
+      <dependency>
+          <groupId>de.htwberlin</groupId>
+          <artifactId>utils</artifactId>
+          <version>0.0.1-SNAPSHOT</version>
+          <scope>compile</scope>
+      </dependency>
   </dependencies>
 </project>

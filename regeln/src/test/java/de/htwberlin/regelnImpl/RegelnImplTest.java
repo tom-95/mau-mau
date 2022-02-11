@@ -27,7 +27,7 @@ public class RegelnImplTest {
     }
 
     @Test
-    public void testCheckCard() {
+    public void testCheckCard1() {
         List<Spieler> spieler = new ArrayList<>();
 
         spieler.add(new Spieler("spieler1", false));
@@ -37,12 +37,124 @@ public class RegelnImplTest {
         List<Karte> ablagestapel = new ArrayList<>();
         ablagestapel.add(new Karte("Herz", "10"));
         spiel.setAblagestapel(ablagestapel);
-        Karte karte = new Karte("Schaufel", "10");
+        Karte karte = new Karte("Pik", "10");
         Assert.assertTrue(regeln.checkCard(spiel, karte));
     }
 
     @Test
-    public void testHandleAss() {
+    public void testCheckCard2() {
+        List<Spieler> spieler = new ArrayList<>();
+
+        spieler.add(new Spieler("spieler1", false));
+        spieler.add(new Spieler("spieler2", false));
+        spiel.setSpieler(spieler);
+        Karte karte = new Karte("Pik", "10");
+        spiel.getSpieler().get(0).setHand(List.of(karte));
+
+        List<Karte> ablagestapel = new ArrayList<>();
+        ablagestapel.add(new Karte("Herz", "10"));
+        spiel.setAblagestapel(ablagestapel);
+        Assert.assertFalse(regeln.checkCard(spiel, karte));
+    }
+
+    @Test
+    public void testCheckCard3() {
+        List<Spieler> spieler = new ArrayList<>();
+
+        spieler.add(new Spieler("spieler1", false));
+        spieler.add(new Spieler("spieler2", false));
+        spiel.setSpieler(spieler);
+        Karte karte = new Karte("Pik", "10");
+        spiel.getSpieler().get(0).setHand(List.of(karte));
+        spiel.getSpieler().get(0).setMauGesagt(true);
+        spiel.getSpieler().get(0).setZugZaehler(2);
+
+        List<Karte> ablagestapel = new ArrayList<>();
+        ablagestapel.add(new Karte("Herz", "10"));
+        spiel.setAblagestapel(ablagestapel);
+        Assert.assertFalse(regeln.checkCard(spiel, karte));
+    }
+
+    @Test
+    public void testCheckCard4() {
+        List<Spieler> spieler = new ArrayList<>();
+
+        spieler.add(new Spieler("spieler1", false));
+        spieler.add(new Spieler("spieler2", false));
+        spiel.setSpieler(spieler);
+        spiel.setZiehZaehler(2);
+
+        List<Karte> ablagestapel = new ArrayList<>();
+        ablagestapel.add(new Karte("Herz", "7"));
+        spiel.setAblagestapel(ablagestapel);
+        Karte karte = new Karte("Herz", "10");
+        Assert.assertFalse(regeln.checkCard(spiel, karte));
+    }
+
+    @Test
+    public void testCheckCard5() {
+        List<Spieler> spieler = new ArrayList<>();
+
+        spieler.add(new Spieler("spieler1", false));
+        spieler.add(new Spieler("spieler2", false));
+        spiel.setSpieler(spieler);
+
+        List<Karte> ablagestapel = new ArrayList<>();
+        ablagestapel.add(new Karte("Herz", "Bube"));
+        spiel.setAblagestapel(ablagestapel);
+        Karte karte = new Karte("Pik", "Bube");
+        Assert.assertFalse(regeln.checkCard(spiel, karte));
+    }
+
+    @Test
+    public void testCheckCard6() {
+        List<Spieler> spieler = new ArrayList<>();
+
+        spieler.add(new Spieler("spieler1", false));
+        spieler.add(new Spieler("spieler2", false));
+        spiel.setSpieler(spieler);
+        spiel.setWunschfarbe("Pik");
+
+        List<Karte> ablagestapel = new ArrayList<>();
+        ablagestapel.add(new Karte("Herz", "9"));
+        spiel.setAblagestapel(ablagestapel);
+        Karte karte = new Karte("Pik", "10");
+        Assert.assertTrue(regeln.checkCard(spiel, karte));
+    }
+
+    @Test
+    public void testCheckCard7() {
+        List<Spieler> spieler = new ArrayList<>();
+
+        spieler.add(new Spieler("spieler1", false));
+        spieler.add(new Spieler("spieler2", false));
+        spiel.setSpieler(spieler);
+        spiel.setWunschfarbe("Pik");
+
+        List<Karte> ablagestapel = new ArrayList<>();
+        ablagestapel.add(new Karte("Herz", "9"));
+        spiel.setAblagestapel(ablagestapel);
+        Karte karte = new Karte("Herz", "10");
+        Assert.assertFalse(regeln.checkCard(spiel, karte));
+    }
+
+    @Test
+    public void testCheckCard8() {
+        List<Spieler> spieler = new ArrayList<>();
+
+        spieler.add(new Spieler("spieler1", false));
+        spieler.add(new Spieler("spieler2", false));
+        spiel.setSpieler(spieler);
+
+        List<Karte> ablagestapel = new ArrayList<>();
+        ablagestapel.add(new Karte("Herz", "10"));
+        spiel.setAblagestapel(ablagestapel);
+        Karte karte = new Karte("Pik", "9");
+        Assert.assertFalse(regeln.checkCard(spiel, karte));
+    }
+
+    @Test
+    public void testHandleAss1() {
         List<Spieler> spieler = new ArrayList<>();
 
         spieler.add(new Spieler("spieler1", false));
@@ -54,6 +166,38 @@ public class RegelnImplTest {
         int aktuellerSpieler = spiel.getAmZug();
 
         Assert.assertEquals(spieler.get(2), spieler.get(aktuellerSpieler));
+    }
+
+    @Test
+    public void testHandleAss2() {
+        List<Spieler> spieler = new ArrayList<>();
+
+        spieler.add(new Spieler("spieler1", false));
+        spieler.add(new Spieler("spieler2", false));
+        spieler.add(new Spieler("spieler3", false));
+        spiel.setSpieler(spieler);
+        spiel.setAmZug(1);
+
+        regeln.handleAss(spiel);
+        int aktuellerSpieler = spiel.getAmZug();
+
+        Assert.assertEquals(spieler.get(0), spieler.get(aktuellerSpieler));
+    }
+
+    @Test
+    public void testHandleAss3() {
+        List<Spieler> spieler = new ArrayList<>();
+
+        spieler.add(new Spieler("spieler1", false));
+        spieler.add(new Spieler("spieler2", false));
+        spieler.add(new Spieler("spieler3", false));
+        spiel.setSpieler(spieler);
+        spiel.setAmZug(2);
+
+        regeln.handleAss(spiel);
+        int aktuellerSpieler = spiel.getAmZug();
+
+        Assert.assertEquals(spieler.get(1), spieler.get(aktuellerSpieler));
     }
 
     @Test

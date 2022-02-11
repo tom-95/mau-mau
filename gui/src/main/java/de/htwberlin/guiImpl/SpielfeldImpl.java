@@ -1,5 +1,6 @@
 package de.htwberlin.guiImpl;
 
+import de.htwberlin.exceptions.DatenbankNichtErreichbarException;
 import de.htwberlin.guiService.SpielfeldService;
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.kartenService.KartenService;
@@ -30,8 +31,9 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     private JPanel otherSide;
     private JPanel bottom = new JPanel();
     private JLabel lastCardLabel = new JLabel();
-    private JLabel opponent = new JLabel();
+    private JLabel playerOverview = new JLabel();
     private JLabel colourChoose = new JLabel();
+    private JButton spielAktualisieren;
     private JLabel player = new JLabel();
     private SpielService spielService;
     private RegelnService regelnService;
@@ -39,17 +41,18 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     private KartenService kartenService;
     private VirtuellerSpielerService virtuellerSpielerService;
     private Spiel spiel;
+    private String eigenerSpieler;
 
     @Autowired
     SpielfeldImpl(SpielService spielService, RegelnService regelnService, SpielerService spielerService, VirtuellerSpielerService virtuellerSpielerService, KartenService kartenService) {
         LOGGER.debug("Spielfeld erzeugt!");
 
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(1200, 800));
+        setPreferredSize(new Dimension(1200, 600));
         mySide = new JPanel(new FlowLayout());
-        mySide.setPreferredSize(new Dimension(1200, 600));
+        mySide.setPreferredSize(new Dimension(1200, 450));
         otherSide = new JPanel(new FlowLayout());
-        otherSide.setPreferredSize(new Dimension(1200, 200));
+        otherSide.setPreferredSize(new Dimension(1200, 150));
         this.add(mySide, BorderLayout.CENTER);
         this.add(otherSide, BorderLayout.NORTH);
         this.add(bottom, BorderLayout.SOUTH);
@@ -66,16 +69,23 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
         });
 
         otherSide.add(lastCardLabel);
-        otherSide.add(opponent);
-        bottom.add(player);
 
         otherSide.add(mauButton);
         mauButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                spiel.getSpieler().get(spiel.getAmZug()).setMauGesagt(true);
+                try {
+                    spiel.getSpieler().get(spiel.getAmZug()).setMauGesagt(true);
+                } catch (RuntimeException ex) {
+                    LOGGER.error("MAU sagen fehlgeschlagen!");
+                    JOptionPane.showMessageDialog(null, "Es ist ein Fehler aufgetreten! Das Programm wird beendet.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    System.exit(0);
+                }
             }
         });
+
+        otherSide.add(playerOverview);
+        bottom.add(player);
 
         otherSide.add(colourChoose);
 
@@ -91,6 +101,22 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
     public void spielStarten() {
         LOGGER.debug("Spiel gestartet!");
+
+        try {
+            new Spielauswahl(this, spielService);
+        }
+        catch (DatenbankNichtErreichbarException e) {
+            JOptionPane.showMessageDialog(null, "Datenbank nicht erreichbar!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        } catch (RuntimeException ex) {
+            LOGGER.error("Spielauswahl fehlgeschlagen!");
+            JOptionPane.showMessageDialog(null, "Es ist ein Fehler aufgetreten! Das Programm wird beendet.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
+
+    }
+
+    public void neuesSpiel() {
 
         Integer[] options = {1, 2, 3, 4};
 
@@ -113,8 +139,61 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
             }
         }
 
-        spiel = spielService.spielStarten(x+1, y+1);
+        try {
+            spiel = spielService.spielStarten(x + 1, y + 1);
 
+            if (x != 0) {
+
+                String[] options3 = {"lokal", "online"};
+
+                int z = JOptionPane.showOptionDialog(null, "Möchtest du online oder lokal spielen?", "Spieltyp wählen", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options3, options3[0]);
+
+                if (z == JOptionPane.CLOSED_OPTION) {
+                    System.exit(0);
+                }
+
+                if (z==1) {
+                    spiel.setOnline(true);
+                }
+            }
+
+            new Namenseingabe(this, options[x], spiel);
+        }
+        catch (RuntimeException e) {
+            LOGGER.error("Spiel konnte nicht gestartet werden!");
+            JOptionPane.showMessageDialog(null, "Es ist ein Fehler aufgetreten! Das Programm wird beendet.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
+
+    }
+
+    public void spielFortsetzen(Spiel spiel2) {
+
+        this.spiel = spiel2;
+
+        if (spiel.isOnline()) {
+            String[] namenArray = new String[spiel.getSpieler().size()];
+            for (int i = 0; i < spiel.getSpieler().size(); i++) {
+                namenArray[i] = spiel.getSpieler().get(i).getName();
+            }
+
+            eigenerSpieler = (String) JOptionPane.showInputDialog(null, "Welcher Spieler bist du?", "Spieler wählen", JOptionPane.QUESTION_MESSAGE, null, namenArray, namenArray[0]);
+
+            spielAktualisieren = new JButton(new String("Spiel aktualisieren"));
+            spielAktualisieren.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        spiel = spielService.spielLaden(spiel.getId());
+                    } catch (DatenbankNichtErreichbarException ex) {
+                        JOptionPane.showMessageDialog(null, "Datenbank nicht erreichbar!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        System.exit(0);
+                    }
+                    spielfeldAnzeigen();
+
+                }
+            });
+        }
         spielfeldAnzeigen();
 
     }
@@ -122,9 +201,19 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     public void spielfeldAnzeigen() {
         LOGGER.debug("Spielfeld wird angezeigt.");
 
-        handAktualisieren();
+        if (spiel.getWunschfarbe() != null) {
+            colourChoose.setText(spiel.getSpielerWunschfarbe() + " wählt " + spiel.getWunschfarbe());
+        } else {
+            colourChoose.setText("");
+        }
+
+        handAktualisieren(spiel.isOnline());
         Karte letzteKarteAblage = spiel.getAblagestapel().get(spiel.getAblagestapel().size()-1);
         letzteKarteAendern(letzteKarteAblage);
+        if ((spiel.isOnline()) && (!spiel.getSpieler().get(spiel.getAmZug()).getName().equals(eigenerSpieler)))
+            bottom.add(spielAktualisieren);
+        else if ((spiel.isOnline()) && (spiel.getSpieler().get(spiel.getAmZug()).getName().equals(eigenerSpieler)))
+            bottom.remove(spielAktualisieren);
         revalidate();
         repaint();
         LOGGER.debug("Spielfeld vollständig erzeugt.");
@@ -140,66 +229,119 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
     }
 
-    public void gewaehlteFarbe(String farbe) {
-
-        if (farbe.equals("")) {
-            colourChoose.setText("");
-        } else {
-            colourChoose.setText("Dein Gegner wählt " + farbe);
-        }
-    }
+//    public void gewaehlteFarbe(String farbe) {
+//
+//        if (farbe.equals("")) {
+//            colourChoose.setText("");
+//        } else {
+//            colourChoose.setText(spiel.getSpieler().get(spiel.getAmZug()).getName() + " wählt " + farbe);
+//        }
+//    }
 
     public void letzteKarteAendern(Karte karte) {
 
-        BufferedImage letzteKarte = CardImageGenerator.generateImage(karte);
+        BufferedImage letzteKarte = null;
+        try {
+            letzteKarte = CardImageGenerator.generateImage(karte);
+        }
+        catch (RuntimeException e) {
+            LOGGER.error("Image konnte nicht geladen werden!");
+            JOptionPane.showMessageDialog(null, "Es ist ein Fehler aufgetreten! Das Programm wird beendet.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
         lastCardLabel.setIcon(new ImageIcon(letzteKarte));
         revalidate();
         repaint();
 
     }
 
-    public void handAktualisieren() {
+    public void handAktualisieren(boolean online) {
         LOGGER.debug("Hand wird aktualisiert.");
-        if (spiel.getSpieler().get(spiel.getAmZug()).isKi())
-            return;
-        mySide.removeAll();
+        anzahlKartenSpielerAnzeigen();
+        List<Karte> hand = null;
+        if (online == false) {
+            if (spiel.getSpieler().get(spiel.getAmZug()).isKi())
+                return;
+            mySide.removeAll();
 
-        String spielerName = spiel.getSpieler().get(spiel.getAmZug()).getName();
-        player.setText(spielerName);
+            String playerText = spiel.getSpieler().get(spiel.getAmZug()).getName();
+            player.setText(playerText);
 
-        List<Karte> hand = spiel.getSpieler().get(spiel.getAmZug()).getHand();
+            hand = spiel.getSpieler().get(spiel.getAmZug()).getHand();
+
+        } else {
+
+            mySide.removeAll();
+
+            if (spiel.getSpieler().get(spiel.getAmZug()).getName().equals(eigenerSpieler))
+                player.setText(eigenerSpieler + " DU BIST AM ZUG");
+            else
+                player.setText(eigenerSpieler);
+
+            for (Spieler spieler : spiel.getSpieler()) {
+                if (spieler.getName().equals(eigenerSpieler))
+                    hand = spieler.getHand();
+            }
+        }
         for (Karte karte : hand)
             karteAnzeigen(karte);
 
         revalidate();
         repaint();
-        //speichern();
         LOGGER.debug("Hand wurde aktualisiert.");
 
     }
 
+    public void anzahlKartenSpielerAnzeigen() {
+
+        int anzahlSpieler = spiel.getSpieler().size();
+        String text="<html>";
+        for (int i=0; i<anzahlSpieler; i++) {
+            String mauGesagt="";
+            if(spiel.getSpieler().get(i).isMauGesagt()&&spiel.getSpieler().get(i).getZugZaehler()<=1)
+                mauGesagt=" MAU !";
+            text+=spiel.getSpieler().get(i).getName() + " hat noch " + spiel.getSpieler().get(i).getHand().size() + " Karten." + mauGesagt+"<br/>";
+        }
+        playerOverview.setText(text+"</html>");
+    }
+
     public void speichern() {
 
-        List<Spieler> spieler = spiel.getSpieler();
-        spieler.forEach(aktuellerSpieler -> spielerService.spielerSpeichern(aktuellerSpieler));
-        spielService.spielSpeichern(spiel);
+        try {
+            List<Spieler> spieler = spiel.getSpieler();
+            spieler.forEach(aktuellerSpieler -> spielerService.spielerSpeichern(aktuellerSpieler));
+            spielService.spielSpeichern(spiel);
+        }
+        catch(DatenbankNichtErreichbarException e) {
+            JOptionPane.showMessageDialog(null, "Datenbank nicht erreichbar!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
 
     }
 
     public void karteAnzeigen(Karte karte) {
 
-        BufferedImage image = CardImageGenerator.generateImage(karte);
-        JButton button = new JButton(new ImageIcon(image));
-        mySide.add(button);
-        button.addActionListener(new CardListener(this, karte));
-        revalidate();
-        repaint();
+        try {
+            BufferedImage image = CardImageGenerator.generateImage(karte);
+            JButton button = new JButton(new ImageIcon(image));
+            mySide.add(button);
+            button.addActionListener(new CardListener(this, karte));
+            revalidate();
+            repaint();
+        } catch (RuntimeException e) {
+            LOGGER.error("Karte kann nicht angezeigt werden!");
+            JOptionPane.showMessageDialog(null, "Es ist ein Fehler aufgetreten! Das Programm wird beendet.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
 
     }
 
-    public void showWinningMessage(Spieler spieler) {
+    public void showWinningMessage(Spieler spieler) throws DatenbankNichtErreichbarException {
 
-        JOptionPane.showMessageDialog(null, spieler.getName() + ", du hast gewonnen!", "WIN", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, spieler.getName() + " hat gewonnen!", "WIN", JOptionPane.INFORMATION_MESSAGE);
+
+        spielService.spielLoeschen(spiel);
+
         System.exit(0);
     }
 
@@ -207,16 +349,21 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
         LOGGER.debug("Nächster Spieler wird gewählt.");
         LOGGER.debug("Alter Spieler: " + spiel.getSpieler().get(spiel.getAmZug()).getName());
 
-        if (spiel.getAmZug() == (spiel.getSpieler().size() - 1)) {
-            spiel.setAmZug(0);
-        } else {
-            spiel.setAmZug(spiel.getAmZug() + 1);
+        try {
+            if (spiel.getAmZug() == (spiel.getSpieler().size() - 1)) {
+                spiel.setAmZug(0);
+            } else {
+                spiel.setAmZug(spiel.getAmZug() + 1);
+            }
+        } catch (RuntimeException e) {
+            LOGGER.error("Nächster Spieler konnte nicht gewählt werden!");
+            JOptionPane.showMessageDialog(null, "Es ist ein Fehler aufgetreten! Das Programm wird beendet.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
-
         LOGGER.debug("Neuer Spieler: " + spiel.getSpieler().get(spiel.getAmZug()).getName());
 
-        spielfeldAnzeigen();
-
+        speichern();
+        // spielfeldAnzeigen();
         kiZugDurchfuehren();
 
     }
@@ -224,10 +371,24 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     public void kiZugDurchfuehren() {
 
         if (spiel.getSpieler().get(spiel.getAmZug()).isKi()) {
-            Karte karte = virtuellerSpielerService.karteWaehlen(spiel, spiel.getSpieler().get(spiel.getAmZug()));
+            Karte karte = null;
+            try {
+                karte = virtuellerSpielerService.karteWaehlen(spiel, spiel.getSpieler().get(spiel.getAmZug()));
+            } catch (RuntimeException e) {
+                LOGGER.error("KI Karte konnte nicht gewählt werden!");
+                JOptionPane.showMessageDialog(null, "Es ist ein Fehler aufgetreten! Das Programm wird beendet.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
+            }
             if (karte != null) {
-                if (spiel.getSpieler().get(spiel.getAmZug()).getHand().size()==2)
-                    spielService.mauSagen(spiel);
+                if (spiel.getSpieler().get(spiel.getAmZug()).getHand().size()==2) {
+                    try {
+                        spielService.mauSagen(spiel);
+                    } catch (RuntimeException e) {
+                        LOGGER.error("KI: MAU sagen fehlgeschlagen!");
+                        JOptionPane.showMessageDialog(null, "Es ist ein Fehler aufgetreten! Das Programm wird beendet.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        System.exit(0);
+                    }
+                }
                 karteLegen(karte);
             }
             else {
@@ -239,50 +400,79 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
     public void karteLegen(Karte karte) {
 
-        if (regelnService.checkCard(spiel, karte)) {
-            int aktuellerSpieler = spiel.getAmZug();
-            spielService.karteLegen(karte, spiel);
-            if (karte.getWert().equals("Bube")) {
-                String farbe;
-                if (!spiel.getSpieler().get(spiel.getAmZug()).isKi())
-                    farbe = farbeWaehlen();
-                else
-                    farbe = virtuellerSpielerService.farbeWaehlen(spiel, spiel.getSpieler().get(spiel.getAmZug()));
-                regelnService.handleBube(spiel, farbe);
-                gewaehlteFarbe(farbe);
-            } else if(karte.getWert().equals("Ass")) {
-                regelnService.handleAss(spiel);
-                kiZugDurchfuehren();
+        try {
+            if ((spiel.isOnline()) && (!spiel.getSpieler().get(spiel.getAmZug()).getName().equals(eigenerSpieler))) {
+                JOptionPane.showMessageDialog(null, "Du bist nicht am Zug!");
+                return;
             }
-            else {
-                gewaehlteFarbe("");
+            if (regelnService.checkCard(spiel, karte)) {
+                int aktuellerSpieler = spiel.getAmZug();
+                spielService.karteLegen(karte, spiel);
+                if (karte.getWert().equals("Bube")) {
+                    String farbe;
+                    if (!spiel.getSpieler().get(spiel.getAmZug()).isKi())
+                        farbe = farbeWaehlen();
+                    else
+                        farbe = virtuellerSpielerService.farbeWaehlen(spiel, spiel.getSpieler().get(spiel.getAmZug()));
+                    regelnService.handleBube(spiel, farbe);
+                } else if (karte.getWert().equals("Ass")) {
+                    regelnService.handleAss(spiel);
+                    speichern();
+                    kiZugDurchfuehren();
+                }
+                letzteKarteAendern(karte);
+                if (spiel.getSpieler().get(aktuellerSpieler).getHand().size() == 0) {
+                    handAktualisieren(spiel.isOnline());
+                    try {
+                        showWinningMessage(spiel.getSpieler().get(aktuellerSpieler));
+                    } catch (DatenbankNichtErreichbarException e) {
+                        LOGGER.error("Datenbank nicht erreichbar!");
+                        JOptionPane.showMessageDialog(null, "Datenbank nicht erreichbar!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        System.exit(0);
+                    }
+                }
+                if (!karte.getWert().equals("Ass")) {
+                    // spielfeldAnzeigen();
+                    naechsterSpieler();
+                }
+            } else if ((spiel.getSpieler().get(spiel.getAmZug()).getHand().size() == 1) && (spiel.getSpieler().get(spiel.getAmZug()).isMauGesagt() == false)) {
+                JOptionPane.showMessageDialog(null, "Du hast nicht MAU gesagt!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Karte ungültig!");
             }
-            letzteKarteAendern(karte);
-            if (spiel.getSpieler().get(aktuellerSpieler).getHand().size() == 0) {
-                handAktualisieren();
-                showWinningMessage(spiel.getSpieler().get(aktuellerSpieler));
-            }
-            if (!karte.getWert().equals("Ass")) {
-                naechsterSpieler();
-            }
-        }
 
-        spielfeldAnzeigen();
+            spielfeldAnzeigen();
+        } catch (RuntimeException ex) {
+            LOGGER.error("Karte konnte nicht gelegt werden!");
+            JOptionPane.showMessageDialog(null, "Es ist ein Fehler aufgetreten! Das Programm wird beendet.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
 
     }
 
     public void ziehen() {
 
-        if (spiel.getZiehZaehler() == 0) {
-            spielService.ziehen(spiel);
-        } else {
-            for (int i = 0; i < spiel.getZiehZaehler(); i++){
-                spielService.ziehen(spiel);
+        try {
+            if ((spiel.isOnline()) && (!spiel.getSpieler().get(spiel.getAmZug()).getName().equals(eigenerSpieler))) {
+                JOptionPane.showMessageDialog(null, "Du bist nicht am Zug!");
+                return;
             }
+            if (spiel.getZiehZaehler() == 0) {
+                spielService.ziehen(spiel);
+            } else {
+                for (int i = 0; i < spiel.getZiehZaehler(); i++) {
+                    spielService.ziehen(spiel);
+                }
+            }
+            spiel.setZiehZaehler(0);
+            naechsterSpieler();
+            spielfeldAnzeigen();
+            // handAktualisieren(spiel.isOnline());
+        }catch (RuntimeException e) {
+            LOGGER.error("Karte konnte nicht gezogen werden!");
+            JOptionPane.showMessageDialog(null, "Es ist ein Fehler aufgetreten! Das Programm wird beendet.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
-        spiel.setZiehZaehler(0);
-        naechsterSpieler();
-        handAktualisieren();
 
     }
 }

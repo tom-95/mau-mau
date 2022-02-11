@@ -23,6 +23,8 @@ public class VirtuellerSpielerImpl implements VirtuellerSpielerService {
         this.regelnService = regelnService;
     }
 
+    public VirtuellerSpielerImpl() {};
+
     public Karte karteWaehlen(Spiel spiel, Spieler spieler) {
         LOGGER.debug("KI wählt Karte.");
         List<Karte> hand = spieler.getHand();
@@ -56,6 +58,12 @@ public class VirtuellerSpielerImpl implements VirtuellerSpielerService {
         }
         LOGGER.debug("KI wählt " + hoechsteAnzahlFarbe);
         return hoechsteAnzahlFarbe;
+    }
+
+    public void setRegelnService(RegelnService regelnService) {
+
+        this.regelnService = regelnService;
+
     }
 
 }

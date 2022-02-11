@@ -6,6 +6,8 @@ import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielerService.SpielerService;
 
+import java.util.List;
+
 public interface SpielService {
 
     /**
@@ -43,7 +45,13 @@ public interface SpielService {
      */
     public void mauSagen(Spiel spiel);
 
+    public Spiel spielLaden(long id);
+
+    public List<Spiel> alleSpieleFinden();
+
     public void spielSpeichern(Spiel spiel);
+
+    public void spielLoeschen(Spiel spiel);
 
     public void setKartenService(KartenService kartenService);
 

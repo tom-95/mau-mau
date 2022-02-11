@@ -9,4 +9,6 @@ public interface VirtuellerSpielerService {
 
     String farbeWaehlen(Spiel spiel, Spieler spieler);
 
+    void setRegelnService(RegelnService regelnService);
+
 }

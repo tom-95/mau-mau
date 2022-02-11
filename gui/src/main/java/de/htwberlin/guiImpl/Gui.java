@@ -18,7 +18,7 @@ public class Gui extends JFrame {
     Gui(SpielfeldImpl spielfeld) {
         LOGGER.debug("Gui started!");
 
-        setSize(1200, 800);
+        setSize(1200, 600);
         setResizable(false);
 
         setTitle("Mau Mau");

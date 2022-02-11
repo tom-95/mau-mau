@@ -92,6 +92,7 @@ public class RegelnImpl implements RegelnService {
         LOGGER.debug("Bube handling gestartet.");
 
         spiel.setWunschfarbe(farbe);
+        spiel.setSpielerWunschfarbe(spiel.getSpieler().get(spiel.getAmZug()).getName());
 
     }
 }

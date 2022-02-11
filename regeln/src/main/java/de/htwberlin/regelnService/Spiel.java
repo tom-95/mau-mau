@@ -17,8 +17,10 @@ public class Spiel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    boolean online = false;
+
     /**
-     * Beinhaltet alle Spieler die am aktuellen Spiel teilnehmen
+     * Beinhaltet alle Spieler, die am aktuellen Spiel teilnehmen.
      */
     @OneToMany(cascade = { CascadeType.MERGE })
     public List<Spieler> spieler;
@@ -30,7 +32,7 @@ public class Spiel {
     public List<Karte> kartendeck;
 
     /**
-     * Beinhaltet alle Karten welche von den Spielern abelegt wurden.
+     * Beinhaltet alle Karten, welche von den Spielern abgelegt wurden.
      */
     @ElementCollection
     private List<Karte> ablagestapel = new ArrayList<>();
@@ -41,18 +43,30 @@ public class Spiel {
     private int amZug = 0;
 
     /**
-     * Zählt die Anzahl Karten welche vom nächsten Spieler gezogen werden müssen.
+     * Zählt die Anzahl Karten, welche vom nächsten Spieler gezogen werden müssen.
      */
     private int ziehZaehler = 0;
 
     /**
-     * Speichert die gewünschte Farbe welche vom nächsten Spieler gelegt werden muss.
+     * Speichert die gewünschte Farbe, welche vom nächsten Spieler gelegt werden muss.
      */
     private String wunschfarbe = null;
+    /**
+     * Speichert den Spieler, welcher die Farbe gewählt hat.
+     */
+    private String spielerWunschfarbe = null;
+
+    public String getSpielerWunschfarbe() { return spielerWunschfarbe; }
+
+    public void setSpielerWunschfarbe(String spielerWunschfarbe) { this.spielerWunschfarbe = spielerWunschfarbe; }
 
     public Long getId() { return id; }
 
     public void setId(Long id) { this.id = id; }
+
+    public boolean isOnline() { return online; }
+
+    public void setOnline(boolean online) { this.online = online; }
 
     public List<Spieler> getSpieler() {
         return spieler;

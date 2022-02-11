@@ -1,6 +1,7 @@
 package de.htwberlin.guiService;
 
 import de.htwberlin.kartenService.Karte;
+import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielerService.Spieler;
 
 public interface SpielfeldService {
@@ -11,11 +12,11 @@ public interface SpielfeldService {
 
     String farbeWaehlen();
 
-    void gewaehlteFarbe(String farbe);
+    // void gewaehlteFarbe(String farbe);
 
     void letzteKarteAendern(Karte karte);
 
-    void handAktualisieren();
+    void handAktualisieren(boolean online);
 
     void karteAnzeigen(Karte karte);
 
@@ -24,5 +25,11 @@ public interface SpielfeldService {
     void naechsterSpieler();
 
     void karteLegen(Karte karte);
+
+    void neuesSpiel();
+
+    void spielFortsetzen(Spiel spiel);
+
+    void speichern();
 
 }

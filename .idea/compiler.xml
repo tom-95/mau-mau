@@ -6,12 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="spiel" />
         <module name="spieler" />
         <module name="karten" />
+        <module name="konfiguration" />
+        <module name="utils" />
+        <module name="spiel" />
         <module name="gui" />
         <module name="regeln" />
-        <module name="konfiguration" />
       </profile>
     </annotationProcessing>
   </component>

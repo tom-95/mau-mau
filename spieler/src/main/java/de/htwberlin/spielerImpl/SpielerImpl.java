@@ -1,5 +1,6 @@
 package de.htwberlin.spielerImpl;
 
+import de.htwberlin.exceptions.DatenbankNichtErreichbarException;
 import de.htwberlin.spielerService.Spieler;
 import de.htwberlin.spielerService.SpielerRepository;
 import de.htwberlin.spielerService.SpielerService;
@@ -41,7 +42,12 @@ public class SpielerImpl implements SpielerService {
 
     public void spielerSpeichern(Spieler spieler) {
 
-        repository.save(spieler);
+        try {
+            repository.save(spieler);
+        } catch(RuntimeException e) {
+            LOGGER.error("Datenbank nicht erreichbar.");
+            throw new DatenbankNichtErreichbarException(e);
+        }
 
     }
 

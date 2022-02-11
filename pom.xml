@@ -16,6 +16,7 @@
         <module>regeln</module>
         <module>gui</module>
         <module>konfiguration</module>
+        <module>utils</module>
     </modules>
 
     <properties>

@@ -1,5 +1,6 @@
 package de.htwberlin.spielImpl;
 
+import de.htwberlin.exceptions.DatenbankNichtErreichbarException;
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.kartenService.KartenService;
 import de.htwberlin.regelnService.RegelnService;
@@ -23,7 +24,6 @@ public class SpielImpl implements SpielService {
     private KartenService kartenService;
     private SpielerService spielerService;
     private RegelnService regelnService;
-
     private SpielRepository repository;
 
     @Autowired
@@ -116,8 +116,6 @@ public class SpielImpl implements SpielService {
         List<Karte> ablagestapel = new ArrayList<>(spiel.getAblagestapel());
         ablagestapel.add(karte);
         spiel.setAblagestapel(ablagestapel);
-//        if(karte.getWert().equals("Ass"))
-//            regelnService.handleAss(spiel);
         if(karte.getWert().equals("7"))
             regelnService.handleSieben(spiel);
         List<Karte> hand = spiel.getSpieler().get(aktuellerSpieler).getHand();
@@ -139,9 +137,56 @@ public class SpielImpl implements SpielService {
         spiel.getSpieler().get(spiel.getAmZug()).setMauGesagt(true);
     }
 
+    public Spiel spielLaden(long id) {
+
+        Spiel spiel = null;
+
+        try {
+            spiel = repository.findById(id).get();
+        } catch (RuntimeException e) {
+            LOGGER.error("Datenbank nicht erreichbar.");
+            throw new DatenbankNichtErreichbarException(e);
+        }
+
+        return spiel;
+
+    }
+
+    public List<Spiel> alleSpieleFinden() {
+
+        List<Spiel> alleSpieleListe = new ArrayList<>();
+
+        try {
+            Iterable<Spiel> alleSpiele = repository.findAll();
+            alleSpiele.forEach(aktuellesSpiel -> alleSpieleListe.add(aktuellesSpiel));
+        } catch (RuntimeException e) {
+            LOGGER.error("Datenbank nicht erreichbar.");
+            throw new DatenbankNichtErreichbarException(e);
+        }
+
+        return alleSpieleListe;
+
+    }
+
     public void spielSpeichern(Spiel spiel) {
 
-        repository.save(spiel);
+        try {
+            repository.save(spiel);
+        } catch(RuntimeException e) {
+            LOGGER.error("Datenbank nicht erreichbar.");
+            throw new DatenbankNichtErreichbarException(e);
+        }
+
+    }
+
+    public void spielLoeschen(Spiel spiel) {
+
+        try {
+            repository.delete(spiel);
+        } catch(RuntimeException e) {
+            LOGGER.error("Datenbank nicht erreichbar.");
+            throw new DatenbankNichtErreichbarException(e);
+        }
 
     }
 
