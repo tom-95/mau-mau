@@ -105,6 +105,7 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
         try {
             new Spielauswahl(this, spielService);
+            LOGGER.debug("Spielauswahl wird angezeigt!");
         }
         catch (DatenbankNichtErreichbarException e) {
             JOptionPane.showMessageDialog(null, "Datenbank nicht erreichbar!", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -118,7 +119,7 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     }
 
     public void neuesSpiel() {
-
+        LOGGER.debug("Neues Spiel gestartet!");
         Integer[] options = {1, 2, 3, 4};
 
         int x = JOptionPane.showOptionDialog(null, "Wie viele Spieler seid ihr?", "Anzahl Spieler", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -159,6 +160,7 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
             }
 
             new Namenseingabe(this, options[x], spiel);
+            LOGGER.debug("Namenseingabe wird angezeigt!");
         }
         catch (RuntimeException e) {
             LOGGER.error("Spiel konnte nicht gestartet werden!");
@@ -169,6 +171,7 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     }
 
     public void spielFortsetzen(Spiel spiel2) {
+        LOGGER.debug("Spiel wird fortgesetzt!");
 
         this.spiel = spiel2;
 
@@ -251,6 +254,8 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
     public String farbeWaehlen() {
 
+        LOGGER.debug("Farbauswahl wird angezeigt!");
+
         String[] options = {"Pik", "Karo", "Herz", "Kreuz"};
 
         int x = JOptionPane.showOptionDialog(null, "Welche Farbe wählst du?", "Farbe wählen", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -328,6 +333,8 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
     public void speichern() {
 
+        LOGGER.debug("Spiel wird gespeichert");
+
         try {
             List<Spieler> spieler = spiel.getSpieler();
             spieler.forEach(aktuellerSpieler -> spielerService.spielerSpeichern(aktuellerSpieler));
@@ -338,6 +345,7 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
             System.exit(0);
         }
 
+        LOGGER.debug("Speichern erfolgreich!");
     }
 
     public void karteAnzeigen(Karte karte) {
@@ -358,6 +366,7 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     }
 
     public void showWinningMessage(Spieler spieler) {
+        LOGGER.debug("Spiel wird beendet!");
 
         try {
             JOptionPane.showMessageDialog(null, spieler.getName() + " hat gewonnen!", "WIN", JOptionPane.INFORMATION_MESSAGE);
@@ -398,6 +407,7 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     public void kiZugDurchfuehren() {
 
         if (spiel.getSpieler().get(spiel.getAmZug()).isKi()) {
+            LOGGER.debug("KI Zug wird durchgeführt");
             Karte karte = null;
             try {
                 karte = virtuellerSpielerService.karteWaehlen(spiel, spiel.getSpieler().get(spiel.getAmZug()));
@@ -421,6 +431,7 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
             else {
                 ziehen();
             }
+            LOGGER.debug("KI Zug beendet!");
         }
 
     }

@@ -4,8 +4,6 @@ import de.htwberlin.guiService.SpielfeldService;
 import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
 import de.htwberlin.spielerService.Spieler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Spielauswahl {
-    private static Logger LOGGER = LogManager.getLogger(Spielauswahl.class);
 
     JFrame frame;
     JPanel buttonPanel, dropdownPanel;
