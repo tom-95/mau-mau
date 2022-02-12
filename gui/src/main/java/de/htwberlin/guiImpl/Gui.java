@@ -35,10 +35,10 @@ public class Gui extends JFrame {
                 for (Spieler spieler : spielfeld.spiel.getSpieler()) {
                     if (spieler.getName().equals(spielfeld.eigenerSpieler)) {
                         spieler.setSpielerInUse(false);
-                        spielfeld.spiel.setSpielBelegt(false);
-                        spielfeld.speichern();
                     }
                 }
+                spielfeld.spiel.setSpielBelegt(false);
+                spielfeld.speichern();
                 System.exit(0);
             }
         });
