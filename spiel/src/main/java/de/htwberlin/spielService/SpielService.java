@@ -62,7 +62,7 @@ public interface SpielService {
      *
      * @return Liste aller Spieler in der Datenbank.
      */
-    public List<Spiel> alleSpieleFinden();
+    public List<Spiel> alleFreienSpieleFinden();
 
     /**
      * Das Übergebene Spiel wird in der Datenbank gespeichert.

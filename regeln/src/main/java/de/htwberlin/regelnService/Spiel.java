@@ -17,6 +17,9 @@ public class Spiel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Gibt an, ob es sich um ein Online-Spiel handelt.
+     */
     boolean online = false;
 
     /**
@@ -55,6 +58,11 @@ public class Spiel {
      * Speichert den Spieler, welcher die Farbe gewählt hat.
      */
     private String spielerWunschfarbe = null;
+
+    /**
+     * Gibt an, ob alle Spieler im Spiel belegt sind.
+     */
+    private boolean spielBelegt = false;
 
     public String getSpielerWunschfarbe() { return spielerWunschfarbe; }
 
@@ -109,4 +117,8 @@ public class Spiel {
     public List<Karte> getKartendeck() { return kartendeck; }
 
     public void setKartendeck(List<Karte> kartendeck) { this.kartendeck = kartendeck; }
+
+    public boolean isSpielBelegt() { return spielBelegt; }
+
+    public void setSpielBelegt(boolean spielBelegt) { this.spielBelegt = spielBelegt; }
 }

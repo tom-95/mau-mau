@@ -6,11 +6,9 @@ import de.htwberlin.kartenService.Karte;
 import de.htwberlin.kartenService.KartenService;
 import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
-import de.htwberlin.regelnService.SpielRepository;
 import de.htwberlin.spielService.SpielService;
 import de.htwberlin.regelnService.VirtuellerSpielerService;
 import de.htwberlin.spielerService.Spieler;
-import de.htwberlin.spielerService.SpielerRepository;
 import de.htwberlin.spielerService.SpielerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -195,7 +193,13 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
                 }
             }
 
-            speichern();
+            boolean belegt = true;
+
+            for (Spieler spieler : spiel.getSpieler())
+                if (spieler.isSpielerInUse()==false)
+                    belegt = false;
+
+            spiel.setSpielBelegt(belegt);
 
             spielAktualisieren = new JButton(new String("Spiel aktualisieren"));
             spielAktualisieren.addActionListener(new ActionListener() {
@@ -215,7 +219,11 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
                 }
             });
-        }
+        } else
+            spiel.setSpielBelegt(true);
+
+        speichern();
+
         spielfeldAnzeigen();
 
     }

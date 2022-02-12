@@ -152,7 +152,7 @@ public class SpielImpl implements SpielService {
 
     }
 
-    public List<Spiel> alleSpieleFinden() {
+    public List<Spiel> alleFreienSpieleFinden() {
 
         List<Spiel> alleSpieleListe = new ArrayList<>();
 
@@ -164,7 +164,13 @@ public class SpielImpl implements SpielService {
             throw new DatenbankNichtErreichbarException(e);
         }
 
-        return alleSpieleListe;
+        List<Spiel> freiSpiele = new ArrayList<>();
+
+        for (Spiel spiel : alleSpieleListe)
+            if (spiel.isSpielBelegt()==false)
+                freiSpiele.add(spiel);
+
+        return freiSpiele;
 
     }
 

@@ -6,7 +6,6 @@ import de.htwberlin.spielService.SpielService;
 import de.htwberlin.spielerService.Spieler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -44,7 +43,7 @@ public class Spielauswahl {
 
         List<String> auswahlListe = new ArrayList<>();
 
-        List<Spiel> alleSpiele = spielService.alleSpieleFinden();
+        List<Spiel> alleSpiele = spielService.alleFreienSpieleFinden();
 
         for (Spiel aktuellesSpiel : alleSpiele) {
 

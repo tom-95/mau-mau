@@ -2,7 +2,6 @@ package de.htwberlin.guiImpl;
 
 import de.htwberlin.guiService.SpielfeldService;
 import de.htwberlin.regelnService.Spiel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
