@@ -362,6 +362,7 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
         try {
             JOptionPane.showMessageDialog(null, spieler.getName() + " hat gewonnen!", "WIN", JOptionPane.INFORMATION_MESSAGE);
             spielService.spielLoeschen(spiel);
+            spielerService.spielerLoeschen(spiel.getSpieler());
         } catch (DatenbankNichtErreichbarException e) {
             LOGGER.error("Datenbank nicht erreichbar!");
             JOptionPane.showMessageDialog(null, "Datenbank nicht erreichbar!", "ERROR", JOptionPane.ERROR_MESSAGE);

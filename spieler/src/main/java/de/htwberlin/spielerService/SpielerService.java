@@ -21,4 +21,11 @@ public interface SpielerService {
      */
     public void spielerSpeichern(Spieler spieler);
 
+    /**
+     * Die übergebenen Spieler werden aus der Datenbank gelöscht.
+     *
+     * @param spieler - Die zu löschenden Spieler.
+     */
+    public void spielerLoeschen(List<Spieler> spieler);
+
 }

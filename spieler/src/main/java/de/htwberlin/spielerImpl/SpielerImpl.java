@@ -51,4 +51,17 @@ public class SpielerImpl implements SpielerService {
 
     }
 
+    @Override
+    public void spielerLoeschen(List<Spieler> spieler) {
+
+        try {
+            for (Spieler aktuellerSpieler : spieler)
+                repository.delete(aktuellerSpieler);
+        } catch(RuntimeException e) {
+            LOGGER.error("Datenbank nicht erreichbar.");
+            throw new DatenbankNichtErreichbarException(e);
+        }
+
+    }
+
 }
