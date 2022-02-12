@@ -3,7 +3,6 @@ package de.htwberlin.guiImpl;
 import de.htwberlin.exceptions.DatenbankNichtErreichbarException;
 import de.htwberlin.guiService.SpielfeldService;
 import de.htwberlin.kartenService.Karte;
-import de.htwberlin.kartenService.KartenService;
 import de.htwberlin.regelnService.RegelnService;
 import de.htwberlin.regelnService.Spiel;
 import de.htwberlin.spielService.SpielService;
@@ -14,9 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,13 +36,12 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     private SpielService spielService;
     private RegelnService regelnService;
     private SpielerService spielerService;
-    private KartenService kartenService;
     private VirtuellerSpielerService virtuellerSpielerService;
     protected Spiel spiel;
     protected String eigenerSpieler;
 
     @Autowired
-    SpielfeldImpl(SpielService spielService, RegelnService regelnService, SpielerService spielerService, VirtuellerSpielerService virtuellerSpielerService, KartenService kartenService) {
+    SpielfeldImpl(SpielService spielService, RegelnService regelnService, SpielerService spielerService, VirtuellerSpielerService virtuellerSpielerService) {
         LOGGER.debug("Spielfeld erzeugt!");
 
         setLayout(new BorderLayout());
@@ -94,7 +90,6 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
         this.regelnService = regelnService;
         this.spielerService = spielerService;
         this.virtuellerSpielerService = virtuellerSpielerService;
-        this.kartenService = kartenService;
 
         setVisible(true);
 
