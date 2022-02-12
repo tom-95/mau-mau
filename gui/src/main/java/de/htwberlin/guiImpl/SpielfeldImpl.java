@@ -45,11 +45,9 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
     private VirtuellerSpielerService virtuellerSpielerService;
     protected Spiel spiel;
     protected String eigenerSpieler;
-    private SpielRepository repository;
-    private SpielerRepository spielerRepository;
 
     @Autowired
-    SpielfeldImpl(SpielService spielService, RegelnService regelnService, SpielerService spielerService, VirtuellerSpielerService virtuellerSpielerService, KartenService kartenService, SpielRepository repository) {
+    SpielfeldImpl(SpielService spielService, RegelnService regelnService, SpielerService spielerService, VirtuellerSpielerService virtuellerSpielerService, KartenService kartenService) {
         LOGGER.debug("Spielfeld erzeugt!");
 
         setLayout(new BorderLayout());
@@ -99,7 +97,6 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
         this.spielerService = spielerService;
         this.virtuellerSpielerService = virtuellerSpielerService;
         this.kartenService = kartenService;
-        this.repository = repository;
 
         setVisible(true);
 
@@ -205,16 +202,11 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        if (!repository.existsById(spiel.getId())) {
+                        if (!spielService.exisitiertSpiel(spiel.getId())) {
                             JOptionPane.showMessageDialog(null, "Dein Gegner hat gewonnen! Das Spiel wird beendet.");
                             System.exit(0);
-                        }
-                    } catch (RuntimeException exc) {
-                        JOptionPane.showMessageDialog(null, "Datenbank nicht erreichbar!", "ERROR", JOptionPane.ERROR_MESSAGE);
-                        System.exit(0);
-                    }
-                    try {
-                        spiel = spielService.spielLaden(spiel.getId());
+                        } else
+                            spiel = spielService.spielLaden(spiel.getId());
                     } catch (DatenbankNichtErreichbarException ex) {
                         JOptionPane.showMessageDialog(null, "Datenbank nicht erreichbar!", "ERROR", JOptionPane.ERROR_MESSAGE);
                         System.exit(0);
@@ -357,13 +349,18 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
 
     }
 
-    public void showWinningMessage(Spieler spieler) throws DatenbankNichtErreichbarException {
+    public void showWinningMessage(Spieler spieler) {
 
-        JOptionPane.showMessageDialog(null, spieler.getName() + " hat gewonnen!", "WIN", JOptionPane.INFORMATION_MESSAGE);
+        try {
+            JOptionPane.showMessageDialog(null, spieler.getName() + " hat gewonnen!", "WIN", JOptionPane.INFORMATION_MESSAGE);
+            spielService.spielLoeschen(spiel);
+        } catch (DatenbankNichtErreichbarException e) {
+            LOGGER.error("Datenbank nicht erreichbar!");
+            JOptionPane.showMessageDialog(null, "Datenbank nicht erreichbar!", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            System.exit(0);
+        }
 
-        spielService.spielLoeschen(spiel);
-
-        System.exit(0);
     }
 
     public void naechsterSpieler() {
@@ -444,13 +441,9 @@ public class SpielfeldImpl extends JPanel implements SpielfeldService {
                 letzteKarteAendern(karte);
                 if (spiel.getSpieler().get(aktuellerSpieler).getHand().size() == 0) {
                     handAktualisieren(spiel.isOnline());
-                    try {
+
                         showWinningMessage(spiel.getSpieler().get(aktuellerSpieler));
-                    } catch (DatenbankNichtErreichbarException e) {
-                        LOGGER.error("Datenbank nicht erreichbar!");
-                        JOptionPane.showMessageDialog(null, "Datenbank nicht erreichbar!", "ERROR", JOptionPane.ERROR_MESSAGE);
-                        System.exit(0);
-                    }
+
                 }
                 if (!karte.getWert().equals("Ass")) {
                     // spielfeldAnzeigen();

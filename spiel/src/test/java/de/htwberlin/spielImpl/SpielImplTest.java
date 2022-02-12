@@ -1,6 +1,5 @@
 package de.htwberlin.spielImpl;
 
-import de.htwberlin.kartenImpl.KartenImpl;
 import de.htwberlin.kartenService.Karte;
 import de.htwberlin.kartenService.KartenService;
 import de.htwberlin.regelnService.RegelnService;
@@ -65,8 +64,8 @@ public class SpielImplTest {
     @Test
     public void testSpielStartenKI() {
         Spieler spieler1 = new Spieler("Spieler 1", false);
-        Spieler kiSpieler1 = new Spieler("KI-Spieler 1", false);
-        Spieler kiSpieler2 = new Spieler("KI-Spieler 2", false);
+        Spieler kiSpieler1 = new Spieler("KI-Spieler 1", true);
+        Spieler kiSpieler2 = new Spieler("KI-Spieler 2", true);
         List<Spieler> spieler = new ArrayList<>();
         spieler.add(spieler1);
         spieler.add(kiSpieler1);

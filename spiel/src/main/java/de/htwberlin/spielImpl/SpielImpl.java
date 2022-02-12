@@ -190,6 +190,21 @@ public class SpielImpl implements SpielService {
 
     }
 
+    @Override
+    public boolean exisitiertSpiel(long id) {
+
+        boolean gameExists;
+
+        try {
+            gameExists = repository.existsById(id);
+        } catch(RuntimeException e) {
+            LOGGER.error("Datenbank nicht erreichbar.");
+            throw new DatenbankNichtErreichbarException(e);
+        }
+
+        return gameExists;
+    }
+
     public void setKartenService(KartenService kartenService) {
 
         this.kartenService = kartenService;

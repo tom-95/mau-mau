@@ -80,4 +80,19 @@ public interface SpielfeldService {
      */
     void speichern();
 
+    /**
+     * Eine Karte wird gezogen.
+     */
+    void ziehen();
+
+    /**
+     * Der Zug des KI-Spielers wird durchgeführt, wenn nötig.
+     */
+    void kiZugDurchfuehren();
+
+    /**
+     * Die Anzahl der Karten aller Spieler werden im GUI angezeigt.
+     */
+    void anzahlKartenSpielerAnzeigen();
+
 }

@@ -8,6 +8,7 @@ public interface SpielerService {
      * Methode zum Erstellen von Spielern.
      *
      * @param anzahlSpieler - Die Anzahl zu erzeugender Spieler.
+     * @param anzahlVirtuellerSpieler - Die Anzahl zu erzeugender virtueller Spieler.
      *
      * @return Eine Liste der neu angelegten Spieler.
      */

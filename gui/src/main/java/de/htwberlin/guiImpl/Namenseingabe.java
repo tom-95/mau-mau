@@ -19,7 +19,7 @@ public class Namenseingabe {
     JPanel buttonPanel, fieldsPanel;
     JButton ok;
 
-    public Namenseingabe(SpielfeldService spielfeld, int anzahlSpieler, Spiel spiel) throws RuntimeException {
+    public Namenseingabe(SpielfeldService spielfeld, int anzahlSpieler, Spiel spiel) {
         frame = new JFrame("Namen eingeben");
         buttonPanel = new JPanel();
         fieldsPanel = new JPanel();

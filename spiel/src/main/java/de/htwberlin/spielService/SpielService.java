@@ -15,6 +15,7 @@ public interface SpielService {
      *
      * @param anzahlSpieler - Die Anzahl Spieler.
      * @param anzahlVirtuellerSpieler - Die Anzahl KI-Spieler.
+     * @return das gestartete Spiel.
      */
     public Spiel spielStarten(int anzahlSpieler, int anzahlVirtuellerSpieler);
 
@@ -76,6 +77,14 @@ public interface SpielService {
      * @param spiel - Das aktuelle Spiel.
      */
     public void spielLoeschen(Spiel spiel);
+
+    /**
+     * Es wird geprüft, ob ein Spiel mit der ID in der Datenbank existiert.
+     *
+     * @param id - Die ID des Spiels.
+     * @return gibt an, ob das Spiel in der DB existiert
+     */
+    public boolean exisitiertSpiel(long id);
 
     void setSpielerService(SpielerService spielerService);
 

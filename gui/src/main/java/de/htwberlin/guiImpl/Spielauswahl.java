@@ -1,9 +1,7 @@
 package de.htwberlin.guiImpl;
 
-import de.htwberlin.exceptions.DatenbankNichtErreichbarException;
 import de.htwberlin.guiService.SpielfeldService;
 import de.htwberlin.regelnService.Spiel;
-import de.htwberlin.regelnService.SpielRepository;
 import de.htwberlin.spielService.SpielService;
 import de.htwberlin.spielerService.Spieler;
 import org.apache.logging.log4j.LogManager;
@@ -27,7 +25,7 @@ public class Spielauswahl {
     SpielfeldService spielfeld;
     SpielService spielService;
 
-    public Spielauswahl(SpielfeldService spielfeld, SpielService spielService) throws DatenbankNichtErreichbarException {
+    public Spielauswahl(SpielfeldService spielfeld, SpielService spielService) {
         frame = new JFrame("Wähle ein Spiel");
         buttonPanel = new JPanel();
         dropdownPanel = new JPanel();
