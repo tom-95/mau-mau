@@ -82,7 +82,7 @@ public interface SpielService {
      * Es wird geprüft, ob ein Spiel mit der ID in der Datenbank existiert.
      *
      * @param id - Die ID des Spiels.
-     * @return gibt an, ob das Spiel in der DB existiert
+     * @return Boolesches Ergebnis, ob das Spiel in der DB existiert
      */
     public boolean exisitiertSpiel(long id);
 

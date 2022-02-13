@@ -5,12 +5,12 @@ import de.htwberlin.kartenService.Karte;
 public interface RegelnService {
 
     /**
-     * Prüft ob die gelegte Karte zulässig ist.
+     * Prüft, ob die gelegte Karte zulässig ist.
      *
      * @param spiel - Das aktuelle Spiel.
      * @param karte - Die Karte welche vom Spieler gelegt wurde.
      *
-     * @return Ergebnis ob die Karte gelegt werden darf.
+     * @return Boolesches Ergebnis, ob die Karte gelegt werden darf.
      */
     public boolean checkCard(Spiel spiel, Karte karte);
 
